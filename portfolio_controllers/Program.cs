@@ -29,7 +29,7 @@ public class Program
         {
             options.AddPolicy(name: "allowAll", policy1 =>
             {
-                policy1.WithOrigins("http://127.0.0.1:5500", "http://localhost:4200")
+                policy1.WithOrigins("http://127.0.0.1:5500", "http://localhost:4200", "http://70.112.56.122")
                 .AllowAnyHeader()
                 .AllowAnyMethod();
             });
