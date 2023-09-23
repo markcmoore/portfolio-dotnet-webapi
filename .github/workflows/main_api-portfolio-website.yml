@@ -23,7 +23,7 @@ jobs:
           include-prerelease: true
 
       - name: Build with dotnet
-        run: dotnet build ../../portfolio_controllers/portfolio_website.csproj --configuration Release
+        run: dotnet build ${{env.DOTNET_ROOT}} --configuration Release
 
       - name: dotnet publish
         run: dotnet publish -c Release -o ${{env.DOTNET_ROOT}}/myapp
