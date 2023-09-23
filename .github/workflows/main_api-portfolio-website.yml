@@ -23,7 +23,7 @@ jobs:
           include-prerelease: true
 
       - name: where am i?
-        run: echo ${{env.pwd}}
+        run: ${{env.pwd}}
 
       - name: Build with dotnet
         run: dotnet build ${{env.DOTNET_ROOT}}\portfolio-dotnet-webapi\portfolio-controllers\portfolio_website.csproj --configuration Release
