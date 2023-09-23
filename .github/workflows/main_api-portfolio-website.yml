@@ -24,6 +24,8 @@ jobs:
 
       - name: Build with dotnet
         run: dotnet build ${{env.DOTNET_ROOT}}\portfolio-dotnet-webapi\portfolio-controllers\portfolio_website.csproj --configuration Release
+      - name: where am i?
+        run: echo ${{env.pwd}}
 
       - name: dotnet publish
         run: dotnet publish -c Release -o ${{env.DOTNET_ROOT}}/myapp
