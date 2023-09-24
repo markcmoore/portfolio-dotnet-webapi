@@ -23,9 +23,9 @@ namespace portfolio_website.Controllers
 
         [HttpGet]
         [Route("testmethod/{num}")]
-        public int testmethod(int x)
+        public int testmethod(int num)
         {
-            return x * 2;
+            return 2;
         }
 
         /// <summary>
