@@ -21,6 +21,13 @@ namespace portfolio_website.Controllers
             this._register = register;
         }
 
+        [HttpGet]
+        [Route("testmethod/{num}")]
+        public int testmethod(int x)
+        {
+            return x * 2;
+        }
+
         /// <summary>
         /// This method will take a RegisterModel object and post a new account to the Database.
         /// It returns a RegisteredAccount Object
