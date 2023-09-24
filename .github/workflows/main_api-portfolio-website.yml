@@ -22,9 +22,6 @@ jobs:
           dotnet-version: '7.x'
           include-prerelease: true
 
-      - name: where am i?
-        run: ${{env.pwd}}
-
       - name: Build with dotnet
         run: dotnet build ./portfolio_controllers/portfolio_website.csproj --configuration Release
 
