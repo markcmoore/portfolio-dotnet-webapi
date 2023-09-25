@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
 using Microsoft.AspNetCore.Mvc;
+using Oracle.ManagedDataAccess.Client;
 using portfolio_business_logic;
 using portfolio_website_models;
 
@@ -14,11 +15,14 @@ namespace portfolio_website.Controllers
     {
         private readonly ILogger<RegisterController> _logger;
         private readonly IRegister _register;
+        private readonly IConfiguration _configuration;
 
-        public RegisterController(ILogger<RegisterController> logger, IRegister register)
+        public RegisterController(IConfiguration _config, ILogger<RegisterController> logger, IRegister register)
         {
             this._logger = logger;
             this._register = register;
+            this._configuration = _config;
+
         }
 
         [HttpGet]
@@ -35,26 +39,51 @@ namespace portfolio_website.Controllers
         /// <returns></returns>
         [HttpGet]
         [Route("RegisterNewAccountAsync")]
-        public async Task<ActionResult<RegisteredAccount>> RegisterNewAccountAsync([FromBody] RegisterModel rm)
+        public async Task<ActionResult<int>> RegisterNewAccountAsync([FromBody] RegisterModel rm)
         {
-            if (!ModelState.IsValid) { return BadRequest(); }
 
-            IDictionary<string, RegisteredAccount> ret = await _register.RegisterNewAccountAsync(rm);
-            RegisteredAccount? ra;
-            if (ret.TryGetValue("success", out ra))
-                return Created($"http://localhost:5210/api/AccountInfo/{ra.AccountId}", ra);
-            else
-            {
-                if (ret.TryGetValue("username", out ra))
-                    return BadRequest("There is already an account with that username");
-                //password
-                else if (ret.TryGetValue("password", out ra))
-                    return BadRequest("There is already an account with that password");
-                //both
-                else if (ret.TryGetValue("both", out ra))
-                    return BadRequest("That username and password already exist.");
-                else return BadRequest();
-            }
+            OracleConnection con = new OracleConnection(this._configuration.GetConnectionString("OracleDb"));
+            OracleCommand cmd = con.CreateCommand();
+
+            string querystring1 = $"INSERT INTO ACCOUNTS (username, password, hashedpassword, salutationid, firstname, lastname, occupationid, email, phonenumber, birthdate) VALUES(:username, :password, :hashedpassword, :salutationid, :firstname, :lastname, :occupationid, :email, :phonenumber, :birthdate)";
+            cmd.CommandText = querystring1;
+
+            cmd.Parameters.Add("username", rm.Username);
+            cmd.Parameters.Add("password", rm.Password);
+            cmd.Parameters.Add("hashedpassword", ".....");
+            cmd.Parameters.Add("salutationId", rm.SalutationId);
+            cmd.Parameters.Add("firstname", rm.FirstName);
+            cmd.Parameters.Add("lastname", rm.LastName);
+            cmd.Parameters.Add("occupationid", rm.OccupationId);
+            cmd.Parameters.Add("email", rm.Email);
+            cmd.Parameters.Add("phonenumber", rm.PhoneNumber);
+            cmd.Parameters.Add("birthdate", rm.Birthdate);
+
+            con.Open();
+            int reader1 = 0;
+            reader1 = await cmd.ExecuteNonQueryAsync(); // save the new user to the db.
+            return reader1;
+
+
+
+            // if (!ModelState.IsValid) { return BadRequest(); }
+
+            // IDictionary<string, RegisteredAccount> ret = await _register.RegisterNewAccountAsync(rm);
+            // RegisteredAccount? ra;
+            // if (ret.TryGetValue("success", out ra))
+            //     return Created($"http://localhost:5210/api/AccountInfo/{ra.AccountId}", ra);
+            // else
+            // {
+            //     if (ret.TryGetValue("username", out ra))
+            //         return BadRequest("There is already an account with that username");
+            //     //password
+            //     else if (ret.TryGetValue("password", out ra))
+            //         return BadRequest("There is already an account with that password");
+            //     //both
+            //     else if (ret.TryGetValue("both", out ra))
+            //         return BadRequest("That username and password already exist.");
+            //     else return BadRequest();
+            // }
         }
 
         /// <summary>
