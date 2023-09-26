@@ -41,33 +41,35 @@ namespace portfolio_website.Controllers
         [Route("RegisterNewAccountAsync")]
         public async Task<ActionResult<int>> RegisterNewAccountAsync([FromBody] RegisterModel rm)
         {
-            string querystring1 = $"INSERT INTO ACCOUNTS (username, password, hashedpassword, salutationid, firstname, lastname, occupationid, email, phonenumber, birthdate) VALUES(:username, :password, :hashedpassword, :salutationid, :firstname, :lastname, :occupationid, :email, :phonenumber, :birthdate)";
-            OracleConnection con;
-            OracleCommand cmd;
-            try
-            {
-                con = new OracleConnection(this._configuration.GetConnectionString("OracleDb"));
-                cmd = con.CreateCommand();
-                cmd.CommandText = querystring1;
-                cmd.Parameters.Add("username", rm.Username);
-                cmd.Parameters.Add("password", rm.Password);
-                cmd.Parameters.Add("hashedpassword", ".....");
-                cmd.Parameters.Add("salutationId", rm.SalutationId);
-                cmd.Parameters.Add("firstname", rm.FirstName);
-                cmd.Parameters.Add("lastname", rm.LastName);
-                cmd.Parameters.Add("occupationid", rm.OccupationId);
-                cmd.Parameters.Add("email", rm.Email);
-                cmd.Parameters.Add("phonenumber", rm.PhoneNumber);
-                cmd.Parameters.Add("birthdate", rm.Birthdate);
-            }
-            catch (Exception ex)
-            {
-                return BadRequest(ex.Message);
-            }
-            con.Open();
-            int reader1 = 0;
-            reader1 = await cmd.ExecuteNonQueryAsync(); // save the new user to the db.
-            return reader1;
+            return BadRequest("YOu suck");
+
+            // string querystring1 = $"INSERT INTO ACCOUNTS (username, password, hashedpassword, salutationid, firstname, lastname, occupationid, email, phonenumber, birthdate) VALUES(:username, :password, :hashedpassword, :salutationid, :firstname, :lastname, :occupationid, :email, :phonenumber, :birthdate)";
+            // OracleConnection con;
+            // OracleCommand cmd;
+            // try
+            // {
+            //     con = new OracleConnection(this._configuration.GetConnectionString("OracleDb"));
+            //     cmd = con.CreateCommand();
+            //     cmd.CommandText = querystring1;
+            //     cmd.Parameters.Add("username", rm.Username);
+            //     cmd.Parameters.Add("password", rm.Password);
+            //     cmd.Parameters.Add("hashedpassword", ".....");
+            //     cmd.Parameters.Add("salutationId", rm.SalutationId);
+            //     cmd.Parameters.Add("firstname", rm.FirstName);
+            //     cmd.Parameters.Add("lastname", rm.LastName);
+            //     cmd.Parameters.Add("occupationid", rm.OccupationId);
+            //     cmd.Parameters.Add("email", rm.Email);
+            //     cmd.Parameters.Add("phonenumber", rm.PhoneNumber);
+            //     cmd.Parameters.Add("birthdate", rm.Birthdate);
+            // }
+            // catch (Exception ex)
+            // {
+            //     return BadRequest(ex.Message);
+            // }
+            // con.Open();
+            // int reader1 = 0;
+            // reader1 = await cmd.ExecuteNonQueryAsync(); // save the new user to the db.
+            // return reader1;
 
 
 
