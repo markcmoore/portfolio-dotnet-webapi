@@ -3,6 +3,3 @@ marksportfoliodb_high = (description= (retry_count=20)(retry_delay=3)(address=(p
 marksportfoliodb_low = (description= (retry_count=20)(retry_delay=3)(address=(protocol=tcps)(port=1522)(host=adb.us-chicago-1.oraclecloud.com))(connect_data=(service_name=gf86a9662bf3953_marksportfoliodb_low.adb.oraclecloud.com))(security=(ssl_server_dn_match=yes)))
 
 marksportfoliodb_medium = (description= (retry_count=20)(retry_delay=3)(address=(protocol=tcps)(port=1522)(host=adb.us-chicago-1.oraclecloud.com))(connect_data=(service_name=gf86a9662bf3953_marksportfoliodb_medium.adb.oraclecloud.com))(security=(ssl_server_dn_match=yes)))
-
-
-
