@@ -71,7 +71,7 @@ namespace portfolio_website.Controllers
                     try
                     {
                         con.Open();
-                        OracleDataReader reader = cmd.ExecuteReader();
+                        //OracleDataReader reader = cmd.ExecuteReader();
 
                         int reader1 = 0;
                         reader1 = await cmd.ExecuteNonQueryAsync(); // save the new user to the db.
