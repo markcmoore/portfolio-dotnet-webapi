@@ -75,7 +75,7 @@ namespace portfolio_website.Controllers
                     }
                     catch (Exception ex)
                     {
-                        return BadRequest(ex.GetBaseException());
+                        return BadRequest(ex.Message);
                     }
                 }
             }
