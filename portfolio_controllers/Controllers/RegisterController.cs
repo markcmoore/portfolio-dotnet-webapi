@@ -46,7 +46,7 @@ namespace portfolio_website.Controllers
 
             //Set Data Source value to an Oracle net service name in
             //  the tnsnames.ora file
-            "Data Source=marksportfoliodb_high;Connection Timeout=30;";
+            "Data Source=marksportfoliodb_low;Connection Timeout=30;";
 
             //Set the directory where the sqlnet.ora, tnsnames.ora, and 
             //  wallet files are located
