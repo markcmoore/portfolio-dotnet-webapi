@@ -48,7 +48,7 @@ namespace portfolio_website.Controllers
 
             //Set the directory where the sqlnet.ora, tnsnames.ora, and 
             //  wallet files are located
-            OracleConfiguration.TnsAdmin = @"D:\home\site\wwwroot\DB\";
+            OracleConfiguration.TnsAdmin = @"D:\home\site\wwwroot\DB";
             OracleConfiguration.WalletLocation = OracleConfiguration.TnsAdmin;
 
             using (OracleConnection con = new OracleConnection(conString))
