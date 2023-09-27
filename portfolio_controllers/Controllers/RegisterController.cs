@@ -41,9 +41,7 @@ namespace portfolio_website.Controllers
         [Route("RegisterNewAccountAsync")]
         public async Task<ActionResult<int>> RegisterNewAccountAsync([FromBody] RegisterModel rm)
         {
-
             string conString = "User Id=ADMIN;Password=123qwe123QWE;" +
-
             //Set Data Source value to an Oracle net service name in
             //  the tnsnames.ora file
             "Data Source=marksportfoliodb_low;Connection Timeout=30;";
@@ -71,15 +69,13 @@ namespace portfolio_website.Controllers
                     try
                     {
                         con.Open();
-                        //OracleDataReader reader = cmd.ExecuteReader();
-
                         int reader1 = 0;
                         reader1 = await cmd.ExecuteNonQueryAsync(); // save the new user to the db.
                         return reader1;
                     }
                     catch (Exception ex)
                     {
-                        return BadRequest(ex);
+                        return BadRequest(ex.GetBaseException());
                     }
                 }
             }
