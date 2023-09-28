@@ -41,63 +41,66 @@ namespace portfolio_website.Controllers
         [Route("RegisterNewAccountAsync")]
         public async Task<ActionResult<int>> RegisterNewAccountAsync([FromBody] RegisterModel rm)
         {
-            string conString = "User Id=ADMIN;Password=123qwe123QWE;" +
-            //Set Data Source value to an Oracle net service name in
-            //  the tnsnames.ora file
-            "Data Source=marksportfoliodb_low;Connection Timeout=30;";
+            #region testing code for the Oracle Db 
 
-            //Set the directory where the sqlnet.ora, tnsnames.ora, and 
-            //  wallet files are located
-            OracleConfiguration.TnsAdmin = @"D:\home\site\wwwroot\DB";
-            OracleConfiguration.WalletLocation = OracleConfiguration.TnsAdmin;
+            // string conString = "User Id=ADMIN;Password=123qwe123QWE;" +
+            // //Set Data Source value to an Oracle net service name in
+            // //  the tnsnames.ora file
+            // "Data Source=marksportfoliodb_low;Connection Timeout=30;";
 
-            using (OracleConnection con = new OracleConnection(conString))
-            {
-                using (OracleCommand cmd = con.CreateCommand())
-                {
-                    cmd.CommandText = "INSERT INTO ACCOUNTS (username, password, hashedpassword, salutationid, firstname, lastname, occupationid, email, phonenumber, birthdate) VALUES(:username, :password, :hashedpassword, :salutationid, :firstname, :lastname, :occupationid, :email, :phonenumber, :birthdate)";
-                    cmd.Parameters.Add("username", rm.Username);
-                    cmd.Parameters.Add("password", rm.Password);
-                    cmd.Parameters.Add("hashedpassword", ".....");
-                    cmd.Parameters.Add("salutationId", rm.SalutationId);
-                    cmd.Parameters.Add("firstname", rm.FirstName);
-                    cmd.Parameters.Add("lastname", rm.LastName);
-                    cmd.Parameters.Add("occupationid", rm.OccupationId);
-                    cmd.Parameters.Add("email", rm.Email);
-                    cmd.Parameters.Add("phonenumber", rm.PhoneNumber);
-                    cmd.Parameters.Add("birthdate", rm.Birthdate);
-                    try
-                    {
-                        con.Open();
-                        int reader1 = 0;
-                        reader1 = await cmd.ExecuteNonQueryAsync(); // save the new user to the db.
-                        return reader1;
-                    }
-                    catch (Exception ex)
-                    {
-                        return BadRequest(ex.Source);
-                    }
-                }
-            }
+            // //Set the directory where the sqlnet.ora, tnsnames.ora, and 
+            // //  wallet files are located
+            // OracleConfiguration.TnsAdmin = @"D:\home\site\wwwroot\DB";
+            // OracleConfiguration.WalletLocation = OracleConfiguration.TnsAdmin;
 
-            // if (!ModelState.IsValid) { return BadRequest(); }
-
-            // IDictionary<string, RegisteredAccount> ret = await _register.RegisterNewAccountAsync(rm);
-            // RegisteredAccount? ra;
-            // if (ret.TryGetValue("success", out ra))
-            //     return Created($"http://localhost:5210/api/AccountInfo/{ra.AccountId}", ra);
-            // else
+            // using (OracleConnection con = new OracleConnection(conString))
             // {
-            //     if (ret.TryGetValue("username", out ra))
-            //         return BadRequest("There is already an account with that username");
-            //     //password
-            //     else if (ret.TryGetValue("password", out ra))
-            //         return BadRequest("There is already an account with that password");
-            //     //both
-            //     else if (ret.TryGetValue("both", out ra))
-            //         return BadRequest("That username and password already exist.");
-            //     else return BadRequest();
+            //     using (OracleCommand cmd = con.CreateCommand())
+            //     {
+            //         cmd.CommandText = "INSERT INTO ACCOUNTS (username, password, hashedpassword, salutationid, firstname, lastname, occupationid, email, phonenumber, birthdate) VALUES(:username, :password, :hashedpassword, :salutationid, :firstname, :lastname, :occupationid, :email, :phonenumber, :birthdate)";
+            //         cmd.Parameters.Add("username", rm.Username);
+            //         cmd.Parameters.Add("password", rm.Password);
+            //         cmd.Parameters.Add("hashedpassword", ".....");
+            //         cmd.Parameters.Add("salutationId", rm.SalutationId);
+            //         cmd.Parameters.Add("firstname", rm.FirstName);
+            //         cmd.Parameters.Add("lastname", rm.LastName);
+            //         cmd.Parameters.Add("occupationid", rm.OccupationId);
+            //         cmd.Parameters.Add("email", rm.Email);
+            //         cmd.Parameters.Add("phonenumber", rm.PhoneNumber);
+            //         cmd.Parameters.Add("birthdate", rm.Birthdate);
+            //         try
+            //         {
+            //             con.Open();
+            //             int reader1 = 0;
+            //             reader1 = await cmd.ExecuteNonQueryAsync(); // save the new user to the db.
+            //             return reader1;
+            //         }
+            //         catch (Exception ex)
+            //         {
+            //             return BadRequest(ex.Source);
+            //         }
+            //     }
             // }
+            #endregion
+
+            if (!ModelState.IsValid) { return BadRequest(); }
+
+            IDictionary<string, RegisteredAccount> ret = await _register.RegisterNewAccountAsync(rm);
+            RegisteredAccount? ra;
+            if (ret.TryGetValue("success", out ra))
+                return Created($"http://localhost:5210/api/AccountInfo/{ra.AccountId}", ra);
+            else
+            {
+                if (ret.TryGetValue("username", out ra))
+                    return BadRequest("There is already an account with that username");
+                //password
+                else if (ret.TryGetValue("password", out ra))
+                    return BadRequest("There is already an account with that password");
+                //both
+                else if (ret.TryGetValue("both", out ra))
+                    return BadRequest("That username and password already exist.");
+                else return BadRequest();
+            }
         }
 
         /// <summary>
