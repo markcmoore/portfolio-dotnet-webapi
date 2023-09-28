@@ -180,7 +180,8 @@ namespace portfolio_website_repo
         public async Task<int> UserNameOrPasswordUsedAsync(string username, string password)
         {
             string queryString = "SELECT aa.usernames, bb.passwords FROM (SELECT COUNT(Username) AS usernames FROM Accounts WHERE username = @uname) aa, (SELECT COUNT(Password) AS passwords FROM Accounts WHERE password = @pword) bb";
-            using (SqlConnection con = new SqlConnection(this.GetConnectionString("AzureDb")))
+            //using (SqlConnection con = new SqlConnection(this.GetConnectionString("AzureDb")))
+            using (SqlConnection con = new SqlConnection("Server=tcp:portfolio-website-server.database.windows.net,1433;Initial Catalog=portfolio-website-database;Persist Security Info=False;User ID=portfolio-db;Password=marks1websiteDb;MultipleActiveResultSets=False;Encrypt=True;TrustServerCertificate=False;Connection Timeout=30;"))
             {
                 using (SqlCommand cmd = new SqlCommand(queryString, con))
                 {
