@@ -11,7 +11,7 @@ namespace portfolio_website_models
         public RegisteredAccount() { }
 
         public RegisteredAccount(
-            string UserName, string Password, string PasswordHash,
+            string UserName, string Password, string HashedPassword,
             int AccountId, int SalutationId, string Salutation, string FirstName, string LastName,
             string Email, int OccupationId, string Occupation, string PhoneNumber, DateTime Birthdate,
             DateTime CreatedOn
@@ -21,7 +21,7 @@ namespace portfolio_website_models
             this.Salutation = Salutation;
             this.Occupation = Occupation;
             this.CreatedOn = CreatedOn;
-            this.PasswordHash = PasswordHash;
+            this.PasswordHash = HashedPassword;
         }
 
         public int AccountId { get; set; } = -1;
