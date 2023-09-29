@@ -1,15 +1,13 @@
-using System.Configuration;
 using System.Data.Common;
-using System.Runtime.CompilerServices;
-using System.Security.Cryptography;
 using Microsoft.Extensions.Configuration;
 using Oracle.ManagedDataAccess.Client;
 using portfolio_website_models;
 using Microsoft.Extensions.Logging;
-using System.Data;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.Data.SqlClient;
 
+
+//    "AzureDb": "Server=tcp:portfolio-website-server.database.windows.net,1433;Initial Catalog=portfolio-website-database;Persist Security Info=False;User ID=portfolio-db;Password=marks1websiteDb;MultipleActiveResultSets=False;Encrypt=True;TrustServerCertificate=False;Connection Timeout=30;"
 namespace portfolio_website_repo
 {
     public class Register_Repo_Access : IRegister_Repo_Access, IRepoStringConfig
@@ -23,9 +21,10 @@ namespace portfolio_website_repo
         }
 
         /// <summary>
-        /// Takes a RegisterModel object and a has representation of the models password. 
+        /// Takes a RegisterModel object and a hash representation of the models password. 
         /// Inserts them into the Db.
-        /// returns a RegisteredAccount object. If there was a Db INSERT faillure, the FirstName property is "failure".
+        /// Returns a RegisteredAccount object. 
+        /// If there was a Db INSERT failure, the FirstName property is "failure".
         /// Otherwise, returns the registerd user who matches the username/password/hash combination.
         /// </summary>
         /// <param name="rm"></param>
@@ -67,8 +66,6 @@ namespace portfolio_website_repo
                     else return new RegisteredAccount() { FirstName = "failure" };
                 }
             }
-
-
         }
 
         /// <summary>
@@ -103,7 +100,6 @@ namespace portfolio_website_repo
         public async Task<RegisteredAccount> GetAccountByUsernameAndPassword(string userName, string password)
         {
             string queryString = "Select a.AccountId, a.Username, a.Password, s.Salutation, a.FirstName, a.LastName, a.Email, a.Phonenumber, o.Occupation, a.Birthdate, a.CreatedOn FROM Accounts a LEFT JOIN Salutations s ON a.SalutationId_FK = s.SalutationId LEFT JOIN Occupations o ON a.OccupationId_FK = o.OccupationId WHERE a.username = @username AND a.password = @password";
-            //string queryString1 = $"INSERT INTO ACCOUNTS (username, password, hashedpassword, salutationid, firstname, lastname, occupationid, email, phonenumber, birthdate) VALUES(@username,@password,@hashedpassword,@salutationid,@firstname,@lastname,@occupationid,@email,@phonenumber,@birthdate)";
 
             using (SqlConnection con = new SqlConnection(this.GetConnectionString("AzureDb")))
             {
