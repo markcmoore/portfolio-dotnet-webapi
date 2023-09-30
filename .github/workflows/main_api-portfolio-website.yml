@@ -48,7 +48,7 @@ jobs:
         shell: powershell
         run: |
           .\.sonar\scanner\dotnet-sonarscanner begin /k:"markcmoore_portfolio-dotnet-webapi" /o:"markcmoore" /d:sonar.token="${{ secrets.SONAR_TOKEN }}" /d:sonar.host.url="https://sonarcloud.io"
-          dotnet build ./portfolio_controllers/portfolio_website.csproj --configuration
+          dotnet build ./portfolio_controllers/portfolio_website.csproj --configuration Release
           .\.sonar\scanner\dotnet-sonarscanner end /d:sonar.token="${{ secrets.SONAR_TOKEN }}"
       - name: dotnet publish
         run: dotnet publish -c Release -o ${{env.DOTNET_ROOT}}/myapp    
