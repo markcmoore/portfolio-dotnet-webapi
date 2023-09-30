@@ -22,7 +22,10 @@ namespace portfolio_website.Controllers
             this._logger = logger;
             this._register = register;
             this._configuration = _config;
+        }
 
+        public RegisterController()
+        {
         }
 
         [HttpGet]

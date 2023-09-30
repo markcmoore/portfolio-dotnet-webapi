@@ -61,9 +61,13 @@ namespace portfolio_website_repo
                     }
                     if (reader1 == 1)
                     {
-                        return await this.GetAccountByUsernameAndPassword(rm.Username, rm.Password);
+                        RegisteredAccount ra = await this.GetAccountByUsernameAndPassword(rm.Username, rm.Password);
+                        if (ra != null)
+                        {
+                            return ra;
+                        }
                     }
-                    else return new RegisteredAccount() { FirstName = "failure" };
+                    return new RegisteredAccount() { FirstName = "failure" };
                 }
             }
         }
