@@ -64,6 +64,5 @@ namespace portfolio_business_logic
             dict.Add("ERROR: There was a database error. Try again.", new RegisteredAccount());
             return dict;
         }
-
     }
 }
