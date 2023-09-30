@@ -24,10 +24,6 @@ namespace portfolio_website.Controllers
             this._configuration = _config;
         }
 
-        public RegisterController()
-        {
-        }
-
         [HttpGet]
         [Route("testmethod/{num}")]
         public int testmethod(int num)
