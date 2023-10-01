@@ -15,13 +15,11 @@ namespace portfolio_website.Controllers
     {
         private readonly ILogger<RegisterController> _logger;
         private readonly IRegister _register;
-        private readonly IConfiguration _configuration;
 
-        public RegisterController(IConfiguration _config, ILogger<RegisterController> logger, IRegister register)
+        public RegisterController(ILogger<RegisterController> logger, IRegister register)
         {
             this._logger = logger;
             this._register = register;
-            this._configuration = _config;
         }
 
         [HttpGet]
