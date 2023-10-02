@@ -26,7 +26,8 @@ namespace portfolio_website.Controllers
         [Route("testmethod/{num}")]
         public int testmethod(int num)
         {
-            return 2;
+            int myNum = num * num;
+            return myNum;
         }
 
         /// <summary>
