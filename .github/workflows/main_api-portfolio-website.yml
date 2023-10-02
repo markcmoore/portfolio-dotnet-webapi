@@ -54,9 +54,9 @@ jobs:
           SONAR_TOKEN: ${{ secrets.SONAR_TOKEN }}
         shell: powershell
         run: |
-          dotnet sonarscanner begin /k:"markcmoore_portfolio-dotnet-webapi" /d:sonar.token="${{ secrets.SONAR_TOKEN }}" /d:sonar.cs.vscoveragexml.reportsPaths=./coverage.xml
+          dotnet sonarscanner begin /k:"markcmoore_portfolio-dotnet-webapi" /d:sonar.token="${{ secrets.SONAR_TOKEN }}" /d:sonar.cs.vscoveragexml.reportsPaths=coverages/coverage.xml
           dotnet build --no-incremental
-          dotnet-coverage collect "dotnet test ./portfolio_website_testing/portfolio_website_testing.csproj" -f xml -o "./coverage.xml"
+          dotnet-coverage collect "dotnet test ./portfolio_website_testing/portfolio_website_testing.csproj" -f xml -o "coverages/coverage.xml"
           dotnet sonarscanner end /d:sonar.token="${{ secrets.SONAR_TOKEN }}"
       - name: dotnet publish
         run: dotnet publish -c Release -o ${{env.DOTNET_ROOT}}/myapp    
@@ -64,8 +64,7 @@ jobs:
         uses: actions/upload-artifact@v2
         with:
           name: .net-app
-          path: ${{env.DOTNET_ROOT}}/myapp
-          
+          path: ${{env.DOTNET_ROOT}}/myapp          
   deploy:
     runs-on: windows-latest
     needs: build
