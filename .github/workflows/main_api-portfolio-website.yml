@@ -67,7 +67,7 @@ jobs:
       shell: powershell
       run: |
         .\.sonar\scanner\dotnet-sonarscanner begin /k:"markcmoore_portfolio-dotnet-webapi" /o:"markcmoore" /d:sonar.login="${{ secrets.SONAR_TOKEN }}" /d:sonar.host.url="https://sonarcloud.io" /d:sonar.cs.opencover.reportsPaths="**/TestResults/**/coverage.opencover.xml" -d:sonar.cs.vstest.reportsPaths="**/TestResults/*.trx"
-        dotnet build --no-restore markcmoore_portfolio-dotnet-webapi
+        dotnet build --no-restore ./portfolio_controllers/portfolio_website.csproj
         .\.sonar\scanner\dotnet-sonarscanner end /d:sonar.login="${{ secrets.SONAR_TOKEN }}"
   
   build:
