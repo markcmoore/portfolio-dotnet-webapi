@@ -56,15 +56,6 @@ jobs:
           dotnet build --no-incremental
           dotnet test --collect "Code Coverage"
           SonarScanner.MSBuild.exe end /d:sonar.token="${{ secrets.SONAR_TOKEN }}"
-          # .\.sonar\scanner\dotnet-sonarscanner begin /k:"markcmoore_portfolio-dotnet-webapi" /o:"markcmoore" /d:sonar.token="${{ secrets.SONAR_TOKEN }}" /d:sonar.host.url="https://sonarcloud.io" /d:sonar.cs.opencover.reportsPaths="**\coverage.opencover.xml"
-          # echo building project
-          # dotnet test ./portfolio_website_testing/portfolio_website_testing.csproj `
-          # --collect "Code Coverage" `
-          # --results-directory TestResults/ `
-          # --logger "trx;LogFileName=unittests.trx" `
-          # --configuration release `
-          # --DataCollectionRunSettings.DataCollectors.DataCollector.Configuration.Format=opencover
-          # .\.sonar\scanner\dotnet-sonarscanner end /d:sonar.token="${{ secrets.SONAR_TOKEN }}"
       - name: dotnet publish
         run: dotnet publish -c Release -o ${{env.DOTNET_ROOT}}/myapp    
       - name: Upload artifact for deployment job
@@ -94,3 +85,14 @@ jobs:
           slot-name: 'Production'
           publish-profile: ${{ secrets.AZUREAPPSERVICE_PUBLISHPROFILE_55E462089B5C4DCCACD5F6FCC22F6FA2 }}
           package: .
+
+
+          # .\.sonar\scanner\dotnet-sonarscanner begin /k:"markcmoore_portfolio-dotnet-webapi" /o:"markcmoore" /d:sonar.token="${{ secrets.SONAR_TOKEN }}" /d:sonar.host.url="https://sonarcloud.io" /d:sonar.cs.opencover.reportsPaths="**\coverage.opencover.xml"
+          # echo building project
+          # dotnet test ./portfolio_website_testing/portfolio_website_testing.csproj `
+          # --collect "Code Coverage" `
+          # --results-directory TestResults/ `
+          # --logger "trx;LogFileName=unittests.trx" `
+          # --configuration release `
+          # --DataCollectionRunSettings.DataCollectors.DataCollector.Configuration.Format=opencover
+          # .\.sonar\scanner\dotnet-sonarscanner end /d:sonar.token="${{ secrets.SONAR_TOKEN }}"
