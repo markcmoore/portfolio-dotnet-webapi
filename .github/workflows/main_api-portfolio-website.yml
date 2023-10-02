@@ -59,7 +59,7 @@ jobs:
       run: dotnet build --no-restore ./portfolio_controllers/portfolio_website.csproj
     # running dotnet test
     - name: Test
-      run: dotnet test --no-build --verbosity normal ./portfolio_controllers/portfolio_website.csproj --collect:"XPlat Code Coverage" --logger trx -- DataCollectionRunSettings.DataCollectors.DataCollector.Configuration.Format=opencover
+      run: dotnet test --no-build --verbosity normal ./portfolio_website_testing/portfolio_website_testing.csproj --collect:"XPlat Code Coverage" --logger trx -- DataCollectionRunSettings.DataCollectors.DataCollector.Configuration.Format=opencover
 
     - name: Build and analyze
       env:
