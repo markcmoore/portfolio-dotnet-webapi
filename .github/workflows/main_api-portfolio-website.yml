@@ -56,7 +56,6 @@ jobs:
         run: |
           dotnet sonarscanner begin /k:"markcmoore_portfolio-dotnet-webapi" /d:sonar.token="${{ secrets.SONAR_TOKEN }}" /d:sonar.cs.vscoveragexml.reportsPaths="coverages/coverage.xml"
           dotnet build portfolio_controllers/portfolio_website.csproj
-          dotnet-coverage collect "dotnet test portfolio_website_testing/portfolio_website_testing.csproj" -f xml -o "coverages/coverage.xml"
           dotnet sonarscanner end /d:sonar.token="${{ secrets.SONAR_TOKEN }}"
       - name: dotnet publish
         run: dotnet publish -c Release -o ${{env.DOTNET_ROOT}}/myapp    
@@ -115,3 +114,6 @@ jobs:
           # dotnet sonarscanner end /d:sonar.token="<sonar-token>"
           # dotnet test ./portfolio_website_testing/portfolio_website_testing.csproj
           # dotnet sonarscanner end /d:sonar.login="${{ secrets.SONAR_TOKEN }}"
+
+
+          #dotnet test portfolio_website_testing/portfolio_website_testing.csproj" -f xml -o "coverages/coverage.xml"
