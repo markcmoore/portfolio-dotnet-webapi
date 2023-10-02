@@ -47,7 +47,7 @@ jobs:
           New-Item -Path .\.sonar\scanner -ItemType Directory
           dotnet tool update dotnet-sonarscanner --tool-path .\.sonar\scanner
       - name: Install Dotnet-coverage
-        run: dotnet tool install --global dotnet-sonarscanner
+        run: dotnet tool install --global dotnet-coverage
       - name: Build and analyze
         env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}  # Needed to get PR information, if any
@@ -55,8 +55,9 @@ jobs:
         shell: powershell
         run: |
           dotnet sonarscanner begin /k:"markcmoore_portfolio-dotnet-webapi" /d:sonar.token="${{ secrets.SONAR_TOKEN }}" /d:sonar.cs.vscoveragexml.reportsPaths=coverage.xml
-          dotnet test ./portfolio_website_testing/portfolio_website_testing.csproj
-          dotnet sonarscanner end /d:sonar.login="${{ secrets.SONAR_TOKEN }}"
+          dotnet build --no-incremental
+          dotnet-coverage collect "dotnet test ./portfolio_website_testing/portfolio_website_testing.csproj" -f xml -o "coverage.xml"
+          dotnet sonarscanner end /d:sonar.token="<sonar-token>"
       - name: dotnet publish
         run: dotnet publish -c Release -o ${{env.DOTNET_ROOT}}/myapp    
       - name: Upload artifact for deployment job
@@ -97,7 +98,7 @@ jobs:
           # --DataCollectionRunSettings.DataCollectors.DataCollector.Configuration.Format=opencover
           # .\.sonar\scanner\dotnet-sonarscanner end /d:sonar.token="${{ secrets.SONAR_TOKEN }}"
           
-          
+
           # SonarScanner.MSBuild.exe begin /k:"markcmoore_portfolio-dotnet-webapi" /d:sonar.token="${{ secrets.SONAR_TOKEN }}" 
           # dotnet build --no-incremental
           # dotnet test --collect "Code Coverage"
@@ -107,3 +108,11 @@ jobs:
           # dotnet build
           # dotnet-coverage collect "dotnet test" -f xml -o "coverage.xml"
           # dotnet sonarscanner end /d:sonar.token="${{ secrets.SONAR_TOKEN }}"
+
+          
+          # dotnet sonarscanner begin /k:"markcmoore_portfolio-dotnet-webapi" /d:sonar.token="${{ secrets.SONAR_TOKEN }}" /d:sonar.cs.vscoveragexml.reportsPaths=coverage.xml
+          # dotnet build --no-incremental
+          # dotnet-coverage collect "dotnet test ./portfolio_website_testing/portfolio_website_testing.csproj" -f xml -o "coverage.xml"
+          # dotnet sonarscanner end /d:sonar.token="<sonar-token>"
+          # dotnet test ./portfolio_website_testing/portfolio_website_testing.csproj
+          # dotnet sonarscanner end /d:sonar.login="${{ secrets.SONAR_TOKEN }}"

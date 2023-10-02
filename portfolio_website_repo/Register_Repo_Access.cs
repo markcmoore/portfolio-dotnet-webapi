@@ -20,6 +20,12 @@ namespace portfolio_website_repo
             this._logger = logger;
         }
 
+        public Register_Repo_Access()
+        {
+            this._configuration = null;
+            this._logger = null;
+        }
+
         /// <summary>
         /// Takes a RegisterModel object and a hash representation of the models password. 
         /// Inserts them into the Db.

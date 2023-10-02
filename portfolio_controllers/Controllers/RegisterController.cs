@@ -13,12 +13,12 @@ namespace portfolio_website.Controllers
     [Route("api/[controller]")]
     public class RegisterController : ControllerBase
     {
-        private readonly ILogger<RegisterController> _logger;
+        // private readonly ILogger<RegisterController> _logger;
         private readonly IRegister _register;
 
-        public RegisterController(ILogger<RegisterController> logger, IRegister register)
+        public RegisterController(/**ILogger<RegisterController> logger,**/ IRegister register)
         {
-            this._logger = logger;
+            // this._logger = logger;
             this._register = register;
         }
 
@@ -26,7 +26,7 @@ namespace portfolio_website.Controllers
         [Route("testmethod/{num}")]
         public int testmethod(int num)
         {
-            int myNum = num * num;
+            int myNum = num * 2;
             return myNum;
         }
 
