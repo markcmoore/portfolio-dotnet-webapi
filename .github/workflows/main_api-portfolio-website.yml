@@ -59,7 +59,7 @@ jobs:
       run: dotnet build --no-restore ./portfolio_controllers/portfolio_website.csproj
     # running dotnet test
     - name: Test
-      run: dotnet test --no-build --verbosity normal ./portfolio_website_testing/portfolio_website_testing.csproj --collect:"XPlat Code Coverage" --logger trx -- DataCollectionRunSettings.DataCollectors.DataCollector.Configuration.Format=opencover
+      run: dotnet test --no-build --verbosity normal ./portfolio_controllers/portfolio_website.csproj --collect:"XPlat Code Coverage" --logger trx -- DataCollectionRunSettings.DataCollectors.DataCollector.Configuration.Format=opencover
 
     - name: Build and analyze
       env:
@@ -68,7 +68,7 @@ jobs:
       shell: powershell
       run: |
         .\.sonar\scanner\dotnet-sonarscanner begin /k:"markcmoore_portfolio-dotnet-webapi" /o:"markcmoore" /d:sonar.token="${{ secrets.SONAR_TOKEN }}" /d:sonar.host.url="https://sonarcloud.io" /d:sonar.cs.opencover.reportsPaths="**/TestResults/**/coverage.opencover.xml" -d:sonar.cs.vstest.reportsPaths="**/TestResults/*.trx"
-        dotnet build --no-restore ./portfolio_controllers/portfolio_website.csproj
+        dotnet build --no-restore portfolio_controllers/portfolio_website.csproj
         .\.sonar\scanner\dotnet-sonarscanner end /d:sonar.token="${{ secrets.SONAR_TOKEN }}"
   
   build:
