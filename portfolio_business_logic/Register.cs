@@ -11,12 +11,18 @@ namespace portfolio_business_logic
 {
     public class Register : IRegister
     {
-        private readonly ILogger<Register> _logger;
+        // private readonly ILogger<Register> _logger;
         private readonly IRegister_Repo_Access _repo;
-        public Register(IRegister_Repo_Access rra, ILogger<Register> logger)
+
+        public Register()
+        {
+            this._repo = null;
+        }
+
+        public Register(IRegister_Repo_Access rra/*, ILogger<Register> logger**/)
         {
             this._repo = rra;
-            this._logger = logger;
+            // this._logger = logger;
         }
 
         /// <summary>
