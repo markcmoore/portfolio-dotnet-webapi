@@ -53,11 +53,11 @@ jobs:
     # - name: Restore dependencies
     #   run: dotnet restore
     # equivalent to you doing dotnet build
-    - name: Build
-      run: dotnet build
+    # - name: Build
+    #   run: dotnet build
     # running dotnet test
     - name: Test
-      run: dotnet test --no-build --verbosity normal --collect:"XPlat Code Coverage" --logger trx -- DataCollectionRunSettings.DataCollectors.DataCollector.Configuration.Format=opencover
+      run: dotnet test --verbosity normal --collect:"XPlat Code Coverage" --logger trx -- DataCollectionRunSettings.DataCollectors.DataCollector.Configuration.Format=opencover
 
     - name: Build and analyze
       env:
