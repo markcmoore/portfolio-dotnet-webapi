@@ -9,10 +9,8 @@ on:
 jobs:
   # Name of this job
   test:
-
 # Which OS should this run on
     runs-on: windows-latest
-
 # The actual instruction you give the machine to execute
     steps:
     # download your source code- equivalent to your git clone command
@@ -70,3 +68,46 @@ jobs:
         .\.sonar\scanner\dotnet-sonarscanner begin /k:"markcmoore_portfolio-dotnet-webapi" /o:"markcmoore" /d:sonar.token="${{ secrets.SONAR_TOKEN }}" /d:sonar.host.url="https://sonarcloud.io" /d:sonar.cs.opencover.reportsPaths="**/TestResults/**/coverage.opencover.xml" -d:sonar.cs.vstest.reportsPaths="**/TestResults/*.trx"
         dotnet build --no-restore
         .\.sonar\scanner\dotnet-sonarscanner end /d:sonar.token="${{ secrets.SONAR_TOKEN }}"
+
+  build:
+      runs-on: windows-latest    
+      steps:
+        - uses: actions/checkout@v2
+  
+        - name: Set up .NET Core
+          uses: actions/setup-dotnet@v1
+          with:
+            dotnet-version: '7.x'
+            include-prerelease: true
+            
+        - name: Build with dotnet
+          run: dotnet build ./portfolio_controllers/portfolio_website.csproj --configuration Release
+  
+        - name: dotnet publish
+          run: dotnet publish -c Release -o ${{env.DOTNET_ROOT}}/myapp
+          
+        - name: Upload artifact for deployment job
+          uses: actions/upload-artifact@v2
+          with:
+            name: .net-app
+            path: ${{env.DOTNET_ROOT}}/myapp
+  deploy:
+    runs-on: windows-latest
+    needs: build
+    environment:
+      name: 'Production'
+      url: ${{ steps.deploy-to-webapp.outputs.webapp-url }}
+      
+    steps:
+      - name: Download artifact from build job
+        uses: actions/download-artifact@v2
+        with:
+          name: .net-app
+      - name: Deploy to Azure Web App
+        id: deploy-to-webapp
+        uses: azure/webapps-deploy@v2
+        with:
+          app-name: 'api-portfolio-website'
+          slot-name: 'Production'
+          publish-profile: ${{ secrets.AZUREAPPSERVICE_PUBLISHPROFILE_55E462089B5C4DCCACD5F6FCC22F6FA2 }}
+          package: .
