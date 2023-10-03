@@ -44,18 +44,15 @@ jobs:
     - name: Install SonarCloud scanner
       if: steps.cache-sonar-scanner.outputs.cache-hit != 'true'
       shell: powershell
+      # the command below establishes a new PATH var on the server just. Now we can use 'dotnet sonarscanner' instead of having to type the path to the .exe file.
       run: |
         New-Item -Path .\.sonar\scanner -ItemType Directory
         dotnet tool update dotnet-sonarscanner --tool-path .\.sonar\scanner
-    # equivalent to doing dotnet restore in your commandline
-    # dotnet restore will download all your dependencies and make sure all your project references are correctly configured
-    # equivalent to doing npm install
-    # - name: Restore dependencies
-    #   run: dotnet restore
-    # equivalent to you doing dotnet build
-    # - name: Build
-    #   run: dotnet build
-    # running dotnet test
+# This regular dotnet CLI command will restore and build before testing.
+# the additional commands: 
+  # collect = the keyword to the test runner program that tells which test type to run.
+  # logger = which logger to log the test results with:
+  # Datacollection.... = the data collector you want to use.  
     - name: Test
       run: dotnet test --verbosity normal --collect:"XPlat Code Coverage" --logger trx -- DataCollectionRunSettings.DataCollectors.DataCollector.Configuration.Format=opencover
 
@@ -65,9 +62,9 @@ jobs:
         SONAR_TOKEN: ${{ secrets.SONAR_TOKEN }}
       shell: powershell
       run: |
-        .\.sonar\scanner\dotnet-sonarscanner begin /k:"markcmoore_portfolio-dotnet-webapi" /o:"markcmoore" /d:sonar.token="${{ secrets.SONAR_TOKEN }}" /d:sonar.host.url="https://sonarcloud.io" /d:sonar.cs.opencover.reportsPaths="**/TestResults/**/coverage.opencover.xml" -d:sonar.cs.vstest.reportsPaths="**/TestResults/*.trx"
+        dotnet sonarscanner begin /k:"markcmoore_portfolio-dotnet-webapi" /o:"markcmoore" /d:sonar.token="${{ secrets.SONAR_TOKEN }}" /d:sonar.host.url="https://sonarcloud.io" /d:sonar.cs.opencover.reportsPaths="**/TestResults/**/coverage.opencover.xml" -d:sonar.cs.vstest.reportsPaths="**/TestResults/*.trx"
         dotnet build --no-restore
-        .\.sonar\scanner\dotnet-sonarscanner end /d:sonar.token="${{ secrets.SONAR_TOKEN }}"
+        dotnet sonarscanner end /d:sonar.token="${{ secrets.SONAR_TOKEN }}"
 
   build:
       runs-on: windows-latest    
