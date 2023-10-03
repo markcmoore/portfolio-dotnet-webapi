@@ -53,13 +53,13 @@ jobs:
     # dotnet restore will download all your dependencies and make sure all your project references are correctly configured
     # equivalent to doing npm install
     - name: Restore dependencies
-      run: dotnet restore ./portfolio_controllers/portfolio_website.csproj
+      run: dotnet restore
     # equivalent to you doing dotnet build
     - name: Build
-      run: dotnet build --no-restore ./portfolio_controllers/portfolio_website.csproj
+      run: dotnet build --no-restore
     # running dotnet test
     - name: Test
-      run: dotnet test --no-build --verbosity normal ./portfolio_website_testing/portfolio_website_testing.csproj --collect:"XPlat Code Coverage" --logger trx -- DataCollectionRunSettings.DataCollectors.DataCollector.Configuration.Format=opencover
+      run: dotnet test --no-build --verbosity normal --collect:"XPlat Code Coverage" --logger trx -- DataCollectionRunSettings.DataCollectors.DataCollector.Configuration.Format=opencover
 
     - name: Build and analyze
       env:
@@ -68,7 +68,7 @@ jobs:
       shell: powershell
       run: |
         .\.sonar\scanner\dotnet-sonarscanner begin /k:"markcmoore_portfolio-dotnet-webapi" /o:"markcmoore" /d:sonar.token="${{ secrets.SONAR_TOKEN }}" /d:sonar.host.url="https://sonarcloud.io" /d:sonar.cs.opencover.reportsPaths="**/TestResults/**/coverage.opencover.xml" -d:sonar.cs.vstest.reportsPaths="**/TestResults/*.trx"
-        dotnet build --no-restore portfolio_controllers/portfolio_website.csproj
+        dotnet build --no-restore
         .\.sonar\scanner\dotnet-sonarscanner end /d:sonar.token="${{ secrets.SONAR_TOKEN }}"
   
   # build:
