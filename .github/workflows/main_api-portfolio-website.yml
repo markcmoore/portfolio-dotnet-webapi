@@ -46,13 +46,14 @@ jobs:
       shell: powershell
       # the command below establishes a new PATH var on the server just. Now we can use 'dotnet sonarscanner' instead of having to type the path to the .exe file.
       run: |
-        New-Item -Path .\.sonar\scanner -ItemType Directory
         dotnet tool update dotnet-sonarscanner --tool-path .\.sonar\scanner
+        
+      #New-Item -Path .\.sonar\scanner -ItemType Directory
 # This regular dotnet CLI command will restore and build before testing.
 # the additional commands: 
   # collect = the keyword to the test runner program that tells which test type to run.
   # logger = which logger to log the test results with:
-  # Datacollection.... = the data collector you want to use.  
+  # Datacollection.... = the test  
     - name: Test
       run: dotnet test --verbosity normal --collect:"XPlat Code Coverage" --logger trx -- DataCollectionRunSettings.DataCollectors.DataCollector.Configuration.Format=opencover
 
@@ -62,9 +63,9 @@ jobs:
         SONAR_TOKEN: ${{ secrets.SONAR_TOKEN }}
       shell: powershell
       run: |
-        dotnet sonarscanner begin /k:"markcmoore_portfolio-dotnet-webapi" /o:"markcmoore" /d:sonar.token="${{ secrets.SONAR_TOKEN }}" /d:sonar.host.url="https://sonarcloud.io" /d:sonar.cs.opencover.reportsPaths="**/TestResults/**/coverage.opencover.xml" -d:sonar.cs.vstest.reportsPaths="**/TestResults/*.trx"
+        .\.sonar\scanner\dotnet-sonarscanner begin /k:"markcmoore_portfolio-dotnet-webapi" /o:"markcmoore" /d:sonar.token="${{ secrets.SONAR_TOKEN }}" /d:sonar.host.url="https://sonarcloud.io" /d:sonar.cs.opencover.reportsPaths="**/TestResults/**/coverage.opencover.xml" -d:sonar.cs.vstest.reportsPaths="**/TestResults/*.trx"
         dotnet build --no-restore
-        dotnet sonarscanner end /d:sonar.token="${{ secrets.SONAR_TOKEN }}"
+        .\.sonar\scanner\dotnet-sonarscanner end /d:sonar.token="${{ secrets.SONAR_TOKEN }}"
 
   build:
       runs-on: windows-latest    
