@@ -81,9 +81,6 @@ namespace portfolio_website_models
         public string PhoneNumber { get; set; }
 
         public DateTime Birthdate { get; set; }
-        // this birthdate DateTime needs to be in this format => "05/27/1979". Here in the API we are going to treat it like a string.
-
-        // "mm/dd/yyyy" is the format for dates in the Oracle DB.
         public DateTime CreatedOn { get; set; } = DateTime.Now;
     }
 }

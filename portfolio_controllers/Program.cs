@@ -23,18 +23,15 @@ public class Program
         builder.Services.AddEndpointsApiExplorer();
         builder.Services.AddSwaggerGen();
         builder.Services.AddScoped<IRegister, Register>();
-        builder.Services.AddScoped<IRepoStringConfig, Register_Repo_Access>();// this interface holds the IConfiguration code access method.
         builder.Services.AddScoped<IRegister_Repo_Access, Register_Repo_Access>();
         builder.Services.AddCors((options) =>
         {
             options.AddPolicy(name: "allowAll", policy1 =>
             {
+                policy1.AllowAnyOrigin().AllowAnyHeader().AllowAnyMethod();
                 // policy1.WithOrigins("http://127.0.0.1:5500", "http://localhost:4200", "http://70.112.56.122")
                 // .AllowAnyHeader()
                 // .AllowAnyMethod();
-
-                policy1.AllowAnyOrigin().AllowAnyHeader().AllowAnyMethod();
-
             });
         });
 

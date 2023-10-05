@@ -8,6 +8,6 @@ namespace portfolio_business_logic
 {
     public interface IRegister
     {
-        public Task<IDictionary<string, RegisteredAccount>> RegisterNewAccountAsync(RegisterModel rm);
+        Task<IDictionary<string, RegisteredAccount>> RegisterNewAccountAsync(RegisterModel rm);
     }
 }
