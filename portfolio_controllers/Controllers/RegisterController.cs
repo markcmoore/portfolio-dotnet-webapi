@@ -13,10 +13,10 @@ namespace portfolio_website.Controllers
     [Route("api/[controller]")]
     public class RegisterController : ControllerBase
     {
-        private readonly MarksLogger<RegisterController> _logger;
+        private readonly ILogger<RegisterController> _logger;
         private readonly IRegister _register;
 
-        public RegisterController(MarksLogger<RegisterController> logger, IRegister register)
+        public RegisterController(IRegister register, ILogger<RegisterController> logger)
         {
             this._logger = logger;
             this._register = register;
@@ -69,8 +69,16 @@ namespace portfolio_website.Controllers
         public async Task<ActionResult<RegisteredAccount>> AccountInfo(int accountId)
         {
             if (!ModelState.IsValid) { return BadRequest(); }
-            // TODO
-            return new RegisteredAccount();
+            RegisteredAccount ret = this._register.AccountInfo(accountId);
+
+            if (ret.AccountId == accountId)
+            {
+                return Ok(new RegisteredAccount() { AccountId = accountId });
+            }
+            else
+            {
+                return BadRequest("An account with that username was not found. Try again.");
+            }
         }
     }
 }

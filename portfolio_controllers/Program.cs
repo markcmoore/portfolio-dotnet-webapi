@@ -1,6 +1,7 @@
 
 using System.Configuration;
 using portfolio_business_logic;
+using portfolio_website_models;
 using portfolio_website_repo;
 
 namespace portfolio_website;
