@@ -2,6 +2,7 @@ using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
+using Microsoft.AspNetCore.Http.HttpResults;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.Logging;
@@ -14,18 +15,21 @@ using Xunit;
 
 namespace portfolio_website_testing
 {
+    /// <summary>
+    /// This class tests the Register controller and implements a mock Register Class instance and mock logger for DI.
+    /// </summary>
     public class Controllers_testing
     {
         // private readonly IConfiguration _configuration;
         // private readonly IRegister_Repo_Access _repo;
-        private readonly MarksLogger<RegisterController> _logger;
+        private readonly MarksLogger _logger;
         private readonly IRegister _register;
         private readonly RegisterController _registerController;
         public Controllers_testing()
         {
             // this._configuration = _config;
             this._register = new MockRegister();
-            this._logger = new MarksLogger<RegisterController>();
+            this._logger = new MarksLogger();
             this._registerController = new RegisterController(this._logger, this._register);
         }
 
@@ -42,13 +46,10 @@ namespace portfolio_website_testing
             Assert.True(myDouble == (myInt * 2));
         }
 
-
-
         [Fact]
         public async void RegisterNewAccountAsync_ReturnsRegisteredAccount()
         {
             // ARRANGE
-            int myInt = 3;
             RegisteredAccount mockAccount = new RegisteredAccount()
             {
                 AccountId = 1,
@@ -63,23 +64,51 @@ namespace portfolio_website_testing
             // get the actionresult containing the mocked return
             ActionResult<IDictionary<string, RegisteredAccount>> retDictionary = await this._registerController.RegisterNewAccountAsync(mockRegisterModel);
 
-            Console.WriteLine(retDictionary.Result);
-            Console.WriteLine(retDictionary.Value);
+            // Console.WriteLine(retDictionary.Result);
+            // Console.WriteLine(retDictionary.Value);
 
-
-            // extract the IDict fron the ActionResult
+            // extract the IDictioinary from the ActionResult
             if (retDictionary.Result is CreatedResult)
             {
-
-                var ret = (retDictionary.Result as CreatedResult)?.Value as IDictionary<string, RegisteredAccount>;
-
+                IDictionary<string, RegisteredAccount>? ret = (retDictionary.Result as CreatedResult)?.Value as IDictionary<string, RegisteredAccount>;
             }
-
 
             // ASSERT
             Assert.True(2 == 2);
         }
 
+        [Fact]
+        public async void AccountInfo_ReturnsRegisteredAccount()
+        {
+            // ARRANGE
+            RegisteredAccount mockAccount = new RegisteredAccount()
+            {
+                AccountId = 212,
+                CreatedOn = DateTime.Now,
+                FirstName = "",
+                LastName = "",
+                Occupation = "test",
+            };
+
+            // ACT
+            // get the actionresult containing the mocked return
+            ActionResult<RegisteredAccount> retRegisteredAccount = await this._registerController.AccountInfo(mockAccount.AccountId);
+
+            // extract the RegisteredAccount from the ActionResult
+            if (retRegisteredAccount.Result is OkObjectResult)
+            {
+                RegisteredAccount? ret = (retRegisteredAccount.Result as OkObjectResult)?.Value as RegisteredAccount;
+                // ASSERT
+                Assert.True(ret?.AccountId == mockAccount.AccountId);
+            }
+            else if (retRegisteredAccount.Result is BadRequest)
+            {
+
+            }
+            else
+                Assert.Fail("AccountInfo failed");
+
+        }
 
 
     }
