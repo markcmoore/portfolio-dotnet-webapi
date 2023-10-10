@@ -12,6 +12,7 @@ using portfolio_website.Controllers;
 using portfolio_website_models;
 using portfolio_website_repo;
 using Xunit;
+using Microsoft.Extensions.Logging;
 
 namespace portfolio_website_testing
 {
@@ -22,15 +23,16 @@ namespace portfolio_website_testing
     {
         // private readonly IConfiguration _configuration;
         // private readonly IRegister_Repo_Access _repo;
-        private readonly MarksLogger _logger;
+        private readonly ILogger<RegisterController> _logger;
         private readonly IRegister _register;
         private readonly RegisterController _registerController;
         public Controllers_testing()
         {
             // this._configuration = _config;
             this._register = new MockRegister();
-            this._logger = new MarksLogger();
-            this._registerController = new RegisterController(this._logger, this._register);
+            ILoggerFactory loggerFactory = LoggerFactory.Create(log => log.AddConsole());
+            this._logger = loggerFactory.CreateLogger<RegisterController>();
+            this._registerController = new RegisterController(this._register, this._logger);
         }
 
         [Fact]
@@ -67,7 +69,7 @@ namespace portfolio_website_testing
             // Console.WriteLine(retDictionary.Result);
             // Console.WriteLine(retDictionary.Value);
 
-            // extract the IDictioinary from the ActionResult
+            // extract the IDictionary from the ActionResult
             if (retDictionary.Result is CreatedResult)
             {
                 IDictionary<string, RegisteredAccount>? ret = (retDictionary.Result as CreatedResult)?.Value as IDictionary<string, RegisteredAccount>;
