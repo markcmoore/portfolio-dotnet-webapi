@@ -160,7 +160,7 @@ namespace portfolio_website_repo
         /// </summary>
         /// <param name="connectionName"></param>
         /// <returns></returns>
-        public string GetConnectionString(string connectionName)
+        private string GetConnectionString(string connectionName)
         {
             return this._configuration?.GetConnectionString("AzureDb")!;
         }
@@ -168,20 +168,20 @@ namespace portfolio_website_repo
         /// <summary>
         /// Checks the database for the existance of that username OR password.
         /// returns an int. 
-        /// If there is at least 1 alike password in the db and 0 alike usernames, return 1,
-        /// If there is 0 alike passwords in the db and 1 alike username, return 2,
-        /// If there is at least 1 alike password and 1 alike username, return 3,
-        /// If there was a problem with the Db, return 4,
-        /// otherwise returns 0;
-        /// /// </summary>
+        /// Returns 1 if there is 1 alike password in the db and 0 alike usernames.
+        /// Returns 2 if there is 0 alike passwords in the db and 1 alike username.
+        /// Returns 3 if there is 1 alike password and 1 alike username.
+        /// Returns 4 if there was a problem with the Db.
+        /// otherwise returns 0; if both the uysername and passwrod are available.
+        /// </summary>
         /// <param name="username"></param>
         /// <param name="password"></param>
         /// <returns></returns>
         public async Task<int> UserNameOrPasswordUsedAsync(string username, string password)
         {
             string queryString = "SELECT aa.usernames, bb.passwords FROM (SELECT COUNT(Username) AS usernames FROM Accounts WHERE username = @uname) aa, (SELECT COUNT(Password) AS passwords FROM Accounts WHERE password = @pword) bb";
-            //using (SqlConnection con = new SqlConnection(this.GetConnectionString("AzureDb")))
-            using (SqlConnection con = new SqlConnection("Server=tcp:portfolio-website-server.database.windows.net,1433;Initial Catalog=portfolio-website-database;Persist Security Info=False;User ID=portfolio-db;Password=marks1websiteDb;MultipleActiveResultSets=False;Encrypt=True;TrustServerCertificate=False;Connection Timeout=30;"))
+
+            using (SqlConnection con = new SqlConnection(this.GetConnectionString("AzureDb")))
             {
                 using (SqlCommand cmd = new SqlCommand(queryString, con))
                 {

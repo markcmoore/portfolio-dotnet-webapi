@@ -12,14 +12,14 @@ namespace portfolio_website_models
         public RegisterModel() { }
 
         public RegisterModel(
-            string UserName = "",
-            string Password = "",
+            string UserName = "default_value",
+            string Password = "default_value",
             int SalutationId = 0,
-            string FirstName = "",
-            string LastName = "",
-            string Email = "",
+            string FirstName = "default_value",
+            string LastName = "default_value",
+            string Email = "default_value",
             int OccupationId = 0,
-            string PhoneNumber = "",
+            string PhoneNumber = "default_value",
             DateTime Birthdate = new DateTime()
             )
         {

@@ -13,22 +13,23 @@ namespace portfolio_business_logic
     {
         // private readonly ILogger<Register> _logger;
         private readonly IRegister_Repo_Access _repo;
+        private readonly ILogger<Register> _logger;
 
-        public Register()
-        {
-            this._repo = null;
-        }
-
-        public Register(IRegister_Repo_Access rra/*, ILogger<Register> logger**/)
+        public Register(IRegister_Repo_Access rra, ILogger<Register> logger)
         {
             this._repo = rra;
-            // this._logger = logger;
+            this._logger = logger;
+        }
+
+        public RegisteredAccount AccountInfo(int accountId)
+        {
+            throw new NotImplementedException();
         }
 
         /// <summary>
         /// This method will verify that the model data is within bounds, as necessary. 
         /// Create a hash of the given password and send the object to the repo layer for POST actions.
-        /// returns a string indicating success or failure and a RegisteredAccoiunt object.
+        /// Returns a string indicating success or failure and a RegisteredAccount object.
         /// </summary>
         /// <param name="rm"></param>
         /// <returns></returns>
@@ -36,17 +37,21 @@ namespace portfolio_business_logic
         {
             // TODO: call bool method to make sure there isn't already a similar username and that the password is unique. 
             int exists = await this._repo.UserNameOrPasswordUsedAsync(rm.Username, rm.Password);
+            // create a dictionary to hold the return from the next part.
             IDictionary<string, RegisteredAccount> dict = new Dictionary<string, RegisteredAccount>();
 
             if (exists == 0)
             {
-                string hashedPassword = this._repo.HashPassword(rm, rm.Password);// get the password hash.
-                RegisteredAccount ret = await this._repo.RegisterNewAccountAsync(rm, hashedPassword);// insert into the Db.
-                if (!ret.FirstName.Equals("failure"))
+                // get the password hash.
+                string hashedPassword = this._repo.HashPassword(rm, "1111111111");
+                // INSERT the new account into the Db.
+                RegisteredAccount ret = await this._repo.RegisterNewAccountAsync(rm, hashedPassword);
+                if (!ret.FirstName.Equals("failure_case"))
                 {
                     dict.Add("success", ret);
                     return dict;
                 }
+                Console.WriteLine($"zero case username=>{ret.Username}");
             }
             else if (exists == 1)
             {
