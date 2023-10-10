@@ -11,6 +11,10 @@ namespace portfolio_website_testing
 {
     public class MockRegister : IRegister
     {
+        public RegisteredAccount AccountInfo(int accountId)
+        {
+            return new RegisteredAccount() { AccountId = accountId };
+        }
 
         public async Task<IDictionary<string, RegisteredAccount>> RegisterNewAccountAsync(RegisterModel rm)
         {
@@ -27,5 +31,9 @@ namespace portfolio_website_testing
             mockDictionary.Add("success", mockAccount);
             return mockDictionary;
         }
+
+
+
+
     }
 }
