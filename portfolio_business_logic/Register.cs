@@ -11,7 +11,6 @@ namespace portfolio_business_logic
 {
     public class Register : IRegister
     {
-        // private readonly ILogger<Register> _logger;
         private readonly IRegister_Repo_Access _repo;
         private readonly ILogger<Register> _logger;
 
@@ -46,9 +45,10 @@ namespace portfolio_business_logic
                 string hashedPassword = this._repo.HashPassword(rm, "1111111111");
                 // INSERT the new account into the Db.
                 RegisteredAccount ret = await this._repo.RegisterNewAccountAsync(rm, hashedPassword);
-                if (!ret.FirstName.Equals("failure_case"))
+                if (!(ret.FirstName == "failure_case"))
                 {
-                    dict.Add("success", ret);
+                    string retStr = "success";
+                    dict.Add(retStr, ret);
                     return dict;
                 }
                 Console.WriteLine($"zero case username=>{ret.Username}");

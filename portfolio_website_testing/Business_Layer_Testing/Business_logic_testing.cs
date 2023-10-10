@@ -34,7 +34,7 @@ namespace portfolio_website_testing
         // }
 
         [Theory]
-        // [InlineData("zerozerozero", "zerozerozero")]
+        [InlineData("zerozerozero", "zerozerozero")]
         [InlineData("oneoneoneone", "oneoneoneone")]
         [InlineData("twotwotwotwo", "twotwotwotwo")]
         [InlineData("threethree", "threethree")]
@@ -46,6 +46,7 @@ namespace portfolio_website_testing
             RegisterModel rm = new RegisterModel() { Username = username, Password = password };
 
             // ACT
+            // creat dict to store the result of the username/password search and insert
             IDictionary<string, RegisteredAccount>? ret = await this._registerClass.RegisterNewAccountAsync(rm);
 
             // ASSERT
