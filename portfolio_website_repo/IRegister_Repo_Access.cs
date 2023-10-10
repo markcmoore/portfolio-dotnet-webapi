@@ -13,6 +13,5 @@ namespace portfolio_website_repo
         public Task<int> UserNameOrPasswordUsedAsync(string username, string password);
         public Task<RegisteredAccount> GetAccountByUsernameAndPassword(string userName, string password);
         public string HashPassword(RegisterModel x, string password);
-
     }
 }
