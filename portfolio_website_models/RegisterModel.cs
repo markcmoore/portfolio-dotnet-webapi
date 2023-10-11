@@ -34,23 +34,6 @@ namespace portfolio_website_models
             this.Birthdate = Birthdate;
         }
 
-        //   AccountId INT IDENTITY(1,1),
-        //   SalutationId FOREIGN KEY REFERENCES Salutations(SalutationId) On DELETE SET NULL,
-        //   FirstName VARCHAR(50) NOT NULL,
-        //   LastName VARCHAR(50) NOT NULL,
-        //   Email VARCHAR(50) NOT NULL,
-        //   EmailConfirmed BOOLEAN DEFAULT FALSE,
-        //   OccupationId KEY REFERENCES OCCUPATIONS(OccupationId) On DELETE SET NULL,
-        //   PhoneNumber CHAR(10), NOT NULL,
-        //   PhoneComfirmed BOOLEAN DEFAULT FALSE,
-        //   -- ProfileImage
-        //   Birthdate DATE NULL,
-        //   CreatedOn DATETIME DEFAULT GETDATE(),
-        //   HasSentEmail BOOLEAN DEFAULT FALSE,
-        //   HasMadeOffer BOOLEAN DEFAULT FALSE
-
-        //no account ID yet.
-
         [Required]
         [StringLength(50, MinimumLength = 10, ErrorMessage = "Your username must be between 10 and 50 characters. ")]
         public string Username { get; set; }

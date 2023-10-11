@@ -25,8 +25,8 @@ namespace portfolio_website_models
         }
 
         public int AccountId { get; set; } = -1;
-        public string Salutation { get; set; } = "default";
-        public string Occupation { get; set; } = "default";
-        public string PasswordHash { get; set; } = "default";
+        public string Salutation { get; set; } = "default_value";
+        public string Occupation { get; set; } = "default_value";
+        public string PasswordHash { get; set; } = "default_value";
     }
 }

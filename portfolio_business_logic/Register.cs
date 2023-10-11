@@ -42,7 +42,7 @@ namespace portfolio_business_logic
             if (exists == 0)
             {
                 // get the password hash.
-                string hashedPassword = this._repo.HashPassword(rm, "1111111111");
+                string hashedPassword = this._repo.HashPassword(rm, rm.Password);
                 // INSERT the new account into the Db.
                 RegisteredAccount ret = await this._repo.RegisterNewAccountAsync(rm, hashedPassword);
                 if (!(ret.FirstName == "failure_case"))
@@ -51,7 +51,6 @@ namespace portfolio_business_logic
                     dict.Add(retStr, ret);
                     return dict;
                 }
-                Console.WriteLine($"zero case username=>{ret.Username}");
             }
             else if (exists == 1)
             {
