@@ -97,21 +97,17 @@ namespace portfolio_website_testing
             ActionResult<RegisteredAccount> retRegisteredAccount = await this._registerController.AccountInfo(mockAccount.AccountId);
 
             // extract the RegisteredAccount from the ActionResult
+            // ASSERT
             if (retRegisteredAccount.Result is OkObjectResult)
             {
                 RegisteredAccount? ret = (retRegisteredAccount.Result as OkObjectResult)?.Value as RegisteredAccount;
-                // ASSERT
                 Assert.True(ret?.AccountId == mockAccount.AccountId);
             }
-            else if (retRegisteredAccount.Result is BadRequest)
+            else if (retRegisteredAccount.Result is BadRequestResult)
             {
-
-            }
-            else
                 Assert.Fail("AccountInfo failed");
-
+            }
         }
-
 
     }
 }
