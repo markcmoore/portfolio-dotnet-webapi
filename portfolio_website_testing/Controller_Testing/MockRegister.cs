@@ -28,7 +28,22 @@ namespace portfolio_website_testing
             };
 
             IDictionary<string, RegisteredAccount> mockDictionary = new Dictionary<string, RegisteredAccount>();
-            mockDictionary.Add("success", mockAccount);
+            if (rm.Username == "success")
+            {
+                mockDictionary.Add("success", mockAccount);
+            }
+            if (rm.Username == "username")
+            {
+                mockDictionary.Add("username", mockAccount);
+            }
+            if (rm.Username == "password")
+            {
+                mockDictionary.Add("password", mockAccount);
+            }
+            if (rm.Username == "both")
+            {
+                mockDictionary.Add("both", mockAccount);
+            }
             return mockDictionary;
         }
 
