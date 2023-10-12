@@ -102,4 +102,4 @@ jobs:
           app-name: 'api-portfolio-website'
           slot-name: 'Production'
           publish-profile: ${{ secrets.AZUREAPPSERVICE_PUBLISHPROFILE_55E462089B5C4DCCACD5F6FCC22F6FA2 }} # this secret is all Azure needs to find the correct resource.
-          package: . # this is the location of the .exe 
+          package: . # the location of the .exe. in this case, it's in the same dir.
