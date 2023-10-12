@@ -15,7 +15,6 @@ namespace portfolio_website_testing.Models_Testing
             // ARRANGE - ACT
             RegisteredAccount regAcc = new RegisteredAccount();
 
-
             //ASSERT
             Assert.True(regAcc is RegisteredAccount);
 
@@ -26,7 +25,6 @@ namespace portfolio_website_testing.Models_Testing
         {
             // ARRANGE - ACT
             RegisterModel regMod = new RegisterModel();
-
 
             //ASSERT
             Assert.True(regMod is RegisterModel);
@@ -39,7 +37,6 @@ namespace portfolio_website_testing.Models_Testing
         {
             // ARRANGE - ACT
             TodoDetails todo = new TodoDetails();
-
             //ASSERT
             Assert.True(todo is TodoDetails);
         }
