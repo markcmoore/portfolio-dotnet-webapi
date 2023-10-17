@@ -20,7 +20,7 @@ namespace portfolio_website_testing
             await dbSetup.CreateTablesAsync();
 
             //ASSERT
-            // Assert.True(true);
+            Assert.True(false);
         }
     }
 }

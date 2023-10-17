@@ -13,11 +13,8 @@ namespace portfolio_website_testing.DatabaseReset
 
         public async Task CreateTablesAsync()
         {
-            string queryString = $"DROP TABLE IF EXIST Salutations;" +
-            "CREATE TABLE Salutations(" +
-            "SalutationId INT PRIMARY KEY IDENTITY(1,1)," +
-            "Salutation VARCHAR(20) NOT NULL," +
-            "CreatedOn DATETIME DEFAULT GETDATE())";
+            string queryString = "DROP TABLE IF EXISTS Salutations;" +
+            "CREATE TABLE Salutations(SalutationId INT PRIMARY KEY IDENTITY(1,1),Salutation VARCHAR(20) NOT NULL,CreatedOn DATETIME DEFAULT GETDATE())";
 
             using (SqlConnection con = new SqlConnection(this.TestingDbConStr))
             {
@@ -28,7 +25,7 @@ namespace portfolio_website_testing.DatabaseReset
                     try { reader1 = await cmd.ExecuteNonQueryAsync(); }// save the new user to the db.
                     catch (DbException ex)
                     {
-                        Console.WriteLine($"There was an error in Rportfolio_website_testing.DatabaseReset.CreateTablesAsync - {ex.ErrorCode} - {ex.InnerException} - {ex.Message}");
+                        Console.WriteLine($"There was an error in portfolio_website_testing.DatabaseReset.CreateTablesAsync - {ex.ErrorCode} - {ex.InnerException} - {ex.Message}");
                     }
                     // if (reader1 == 1){}
                     con.Close();
