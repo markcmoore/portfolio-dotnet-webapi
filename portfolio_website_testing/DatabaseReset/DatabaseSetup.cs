@@ -9,14 +9,20 @@ namespace portfolio_website_testing.DatabaseReset
 {
     public class DatabaseSetup : IDatabaseSetup
     {
-        private string TestingDbConStr { get; set; } = "Server=tcp:portfolio-website-server.database.windows.net,1433;Initial Catalog=portfolio-website-testing-db;Persist Security Info=False;User ID=portfolio-db;Password=marks1websiteDb;MultipleActiveResultSets=False;Encrypt=True;TrustServerCertificate=False;Connection Timeout=30;";
+        private string _TestingDbConStr = null;
+        public DatabaseSetup(string conStr)
+        {
+            this._TestingDbConStr = conStr;
+        }
+
+        // private string TestingDbConStr { get; set; } = "Server=tcp:portfolio-website-server.database.windows.net,1433;Initial Catalog=portfolio-website-testing-db;Persist Security Info=False;User ID=portfolio-db;Password=marks1websiteDb;MultipleActiveResultSets=False;Encrypt=True;TrustServerCertificate=False;Connection Timeout=30;";
 
         public async Task CreateTablesAsync()
         {
             string queryString = "DROP TABLE IF EXISTS Salutations;" +
             "CREATE TABLE Salutations(SalutationId INT PRIMARY KEY IDENTITY(1,1),Salutation VARCHAR(20) NOT NULL,CreatedOn DATETIME DEFAULT GETDATE())";
 
-            using (SqlConnection con = new SqlConnection(this.TestingDbConStr))
+            using (SqlConnection con = new SqlConnection(this._TestingDbConStr))
             {
                 using (SqlCommand cmd = new SqlCommand(queryString, con))
                 {
