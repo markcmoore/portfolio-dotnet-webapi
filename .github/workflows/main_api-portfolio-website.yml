@@ -55,7 +55,7 @@ jobs:
     #create a secrets file here so that the test project has secrets to find.
       run: |
         dotnet user-secrets init -p portfolio_website_testing
-        dotnet user-secrets set "ConnectionStrings:TestingDb" ${{secrets.CONNECTIONSTRINGS_TESTINGDB}}
+        dotnet user-secrets set "ConnectionStrings:TestingDb" "${{secrets.CONNECTIONSTRINGS_TESTINGDB}}"
         dotnet test --verbosity normal --collect:"XPlat Code Coverage" --logger trx -- DataCollectionRunSettings.DataCollectors.DataCollector.Configuration.Format=opencover
 
 # the scanner needs to 1)be started, 2)the app built, then 3)ended. The app must be built between the "begin" and "end" statements.
