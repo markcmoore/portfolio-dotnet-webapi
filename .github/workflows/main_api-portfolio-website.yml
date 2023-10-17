@@ -52,7 +52,11 @@ jobs:
   # logger = which logger to log the test results with:
   # Datacollection.... = the test  
     - name: Test
-      run: dotnet test --verbosity normal --collect:"XPlat Code Coverage" --logger trx -- DataCollectionRunSettings.DataCollectors.DataCollector.Configuration.Format=opencover --TestingDb ${{secrets.CONNECTIONSTRINGS_TESTINGDB}}
+    #create a secrets file here so that the test project has secrets to find.
+      run: |
+        dotnet user-secrets init
+        dotnet user-secrets set "ConnectionStrings:TestingDb" ${{secrets.CONNECTIONSTRINGS_TESTINGDB}}
+        dotnet test --verbosity normal --collect:"XPlat Code Coverage" --logger trx -- DataCollectionRunSettings.DataCollectors.DataCollector.Configuration.Format=opencover --TestingDb ${{secrets.CONNECTIONSTRINGS_TESTINGDB}}
 
 # the scanner needs to 1)be started, 2)the app built, then 3)ended. The app must be built between the "begin" and "end" statements.
 # The 1st arg, a path, is the path to the scanner .exe that we downloaded in the 'Install SonarCloud scanner' step above.
