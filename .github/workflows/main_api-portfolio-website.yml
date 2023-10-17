@@ -11,6 +11,8 @@ jobs:
   test:
 # Which OS should this run on
     runs-on: windows-latest
+    env:
+      TestingDb : ${{ secrets.TestingDb }}
 # The actual instruction you give the machine to execute
     steps:
     # download your source code- equivalent to your git clone command
@@ -64,6 +66,9 @@ jobs:
         .\.sonar\scanner\dotnet-sonarscanner begin /k:"markcmoore_portfolio-dotnet-webapi" /o:"markcmoore" /d:sonar.token="${{ secrets.SONAR_TOKEN }}" /d:sonar.host.url="https://sonarcloud.io" /d:sonar.cs.opencover.reportsPaths="**/TestResults/**/coverage.opencover.xml" /d:sonar.cs.vstest.reportsPaths="**/TestResults/*.trx" /d:sonar.coverage.exclusions="**/DB_OracleCreds/**/*.*"
         dotnet build --no-restore 
         .\.sonar\scanner\dotnet-sonarscanner end /d:sonar.token="${{ secrets.SONAR_TOKEN }}"
+    - name: logout
+      run: |
+        az logout
 
   build:
       runs-on: windows-latest    
