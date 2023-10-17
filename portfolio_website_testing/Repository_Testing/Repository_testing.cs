@@ -12,14 +12,14 @@ namespace portfolio_website_testing
     public class Repository_testing
     {
         private readonly IConfiguration? _configuration = null;
-        private string? _TestingDbConStr = string.Empty;
+        private string? _TestingDbConStr = "Server=tcp:portfolio-website-server.database.windows.net,1433;Initial Catalog=portfolio-website-testing-db;Persist Security Info=False;User ID=portfolio-db;Password=marks1websiteDb;MultipleActiveResultSets=False;Encrypt=True;TrustServerCertificate=False;Connection Timeout=30;";
         public Repository_testing()
         {
             this._configuration = new ConfigurationBuilder()
                 .AddUserSecrets<Repository_testing>()
                 .AddEnvironmentVariables()
                 .Build(); ;
-            this._TestingDbConStr = this._configuration.GetConnectionString("TestingDb");
+            //this._TestingDbConStr = this._configuration.GetConnectionString("TestingDb");// haven't been able to get htis to work with github actions
             Console.WriteLine(this._TestingDbConStr);
         }
 

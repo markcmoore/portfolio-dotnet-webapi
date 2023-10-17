@@ -11,8 +11,6 @@ jobs:
   test:
 # Which OS should this run on
     runs-on: windows-latest
-    env:
-      TestingDb : ${{ secrets.CONNECTIONSTRINGS_TESTINGDB }}
 # The actual instruction you give the machine to execute
     steps:
     # download your source code- equivalent to your git clone command
@@ -54,7 +52,7 @@ jobs:
   # logger = which logger to log the test results with:
   # Datacollection.... = the test  
     - name: Test
-      run: dotnet test --verbosity normal --collect:"XPlat Code Coverage" --logger trx -- DataCollectionRunSettings.DataCollectors.DataCollector.Configuration.Format=opencover
+      run: dotnet test --verbosity normal --collect:"XPlat Code Coverage" --logger trx -- DataCollectionRunSettings.DataCollectors.DataCollector.Configuration.Format=opencover --TestingDb ${{secrets.CONNECTIONSTRINGS_TESTINGDB}}
 
 # the scanner needs to 1)be started, 2)the app built, then 3)ended. The app must be built between the "begin" and "end" statements.
 # The 1st arg, a path, is the path to the scanner .exe that we downloaded in the 'Install SonarCloud scanner' step above.
