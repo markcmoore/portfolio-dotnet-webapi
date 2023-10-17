@@ -52,7 +52,7 @@ jobs:
   # logger = which logger to log the test results with:
   # Datacollection.... = the test  
     - name: Test
-    #create a secrets file here so that the test project has secrets to find.
+    #create a secrets file here so that the test project has secrets connection strings to find.
       run: |
         dotnet user-secrets init -p portfolio_website_testing
         dotnet user-secrets set "ConnectionStrings:TestingDb" "${{secrets.CONNECTIONSTRINGS_TESTINGDB}}"
