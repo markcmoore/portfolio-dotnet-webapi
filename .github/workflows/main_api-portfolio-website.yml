@@ -12,7 +12,7 @@ jobs:
 # Which OS should this run on
     runs-on: windows-latest
     env:
-      TestingDb : ${{ secrets.TestingDb }}
+      TestingDb : ${{ secrets.CONNECTIONSTRINGS_TESTINGDB }}
 # The actual instruction you give the machine to execute
     steps:
     # download your source code- equivalent to your git clone command
