@@ -8,10 +8,10 @@ namespace portfolio_website_repo
 {
     public interface IRegister_Repo_Access
     {
-        public Task<RegisteredAccount> RegisterNewAccountAsync(RegisterModel rm, string hashedPassword);
-        public Task<List<TodoDetails>> Todos(int accountId);
-        public Task<int> UserNameOrPasswordUsedAsync(string username, string password);
-        public Task<RegisteredAccount> GetAccountByUsernameAndPassword(string userName, string password);
-        public string HashPassword(RegisterModel x, string password);
+        Task<RegisteredAccount> RegisterNewAccountAsync(RegisterModel rm, string hashedPassword);
+        Task<List<TodoDetails>> Todos(int accountId);
+        Task<int> UserNameOrPasswordUsedAsync(string username, string password);
+        Task<RegisteredAccount> GetAccountByUsernameAndPassword(string userName, string password);
+        string HashPassword(RegisterModel x, string password);
     }
 }

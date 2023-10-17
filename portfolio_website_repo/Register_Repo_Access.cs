@@ -12,10 +12,12 @@ namespace portfolio_website_repo
     {
         private readonly IConfiguration? _configuration;
         private readonly ILogger<Register_Repo_Access>? _logger;
-        public Register_Repo_Access(IConfiguration _config, ILogger<Register_Repo_Access> logger)
+        private readonly string _dbName;
+        public Register_Repo_Access(IConfiguration _config, ILogger<Register_Repo_Access> logger, string dbName = "AzureDb")
         {
             this._configuration = _config;
             this._logger = logger;
+            this._dbName = dbName;// when testing the testproject will send "TestingDb" so that the repo layer uses the testing db.
         }
 
         public Register_Repo_Access() { }
@@ -27,14 +29,14 @@ namespace portfolio_website_repo
         /// If there was a Db INSERT failure, the FirstName property is "failure".
         /// Otherwise, returns the registerd user who matches the username/password/hash combination.
         /// </summary>
-        /// <param name="rm"></param>
+        /// <param name="rm">< /param>
         /// <param name="hashedPassword"></param>
         /// <returns></returns>
         public async Task<RegisteredAccount> RegisterNewAccountAsync(RegisterModel rm, string hashedPassword)
         {
             string queryString1 = $"INSERT INTO ACCOUNTS (username, password, hashedpassword, salutationid_FK, firstname, lastname, occupationid_FK, email, phonenumber, birthdate) VALUES(@username,@password,@hashedpassword,@salutationid,@firstname,@lastname,@occupationid,@email,@phonenumber,@birthdate)";
 
-            using (SqlConnection con = new SqlConnection(this.GetConnectionString("AzureDb")))
+            using (SqlConnection con = new SqlConnection(this.GetConnectionString(this._dbName)))
             {
 
                 using (SqlCommand cmd = new SqlCommand(queryString1, con))
@@ -79,7 +81,7 @@ namespace portfolio_website_repo
         /// <returns></returns>
         public async Task<List<TodoDetails>> Todos(int accountId)
         {
-            OracleConnection con1 = new OracleConnection(this.GetConnectionString("AzureDb"));
+            OracleConnection con1 = new OracleConnection(this.GetConnectionString(this._dbName));
             OracleCommand cmd1 = con1.CreateCommand();
             string querystring1 = "Select * from Todos";// TODO:create the big multi-join query string
             cmd1.CommandText = querystring1;
@@ -105,7 +107,7 @@ namespace portfolio_website_repo
         {
             string queryString = "Select a.AccountId, a.Username, a.Password, s.Salutation, a.FirstName, a.LastName, a.Email, a.Phonenumber, o.Occupation, a.Birthdate, a.CreatedOn FROM Accounts a LEFT JOIN Salutations s ON a.SalutationId_FK = s.SalutationId LEFT JOIN Occupations o ON a.OccupationId_FK = o.OccupationId WHERE a.username = @username AND a.password = @password";
 
-            using (SqlConnection con = new SqlConnection(this.GetConnectionString("AzureDb")))
+            using (SqlConnection con = new SqlConnection(this.GetConnectionString(this._dbName)))
             {
                 using (SqlCommand cmd = new SqlCommand(queryString, con))
                 {
@@ -162,7 +164,7 @@ namespace portfolio_website_repo
         /// <returns></returns>
         private string GetConnectionString(string connectionName)
         {
-            return this._configuration?.GetConnectionString("AzureDb")!;
+            return this._configuration?.GetConnectionString(this._dbName)!;
         }
 
         /// <summary>
@@ -172,7 +174,7 @@ namespace portfolio_website_repo
         /// Returns 2 if there is 0 alike passwords in the db and 1 alike username.
         /// Returns 3 if there is 1 alike password and 1 alike username.
         /// Returns 4 if there was a problem with the Db.
-        /// otherwise returns 0; if both the uysername and passwrod are available.
+        /// otherwise returns 0; if both the username and password are available.
         /// </summary>
         /// <param name="username"></param>
         /// <param name="password"></param>
@@ -181,7 +183,7 @@ namespace portfolio_website_repo
         {
             string queryString = "SELECT aa.usernames, bb.passwords FROM (SELECT COUNT(Username) AS usernames FROM Accounts WHERE username = @uname) aa, (SELECT COUNT(Password) AS passwords FROM Accounts WHERE password = @pword) bb";
 
-            using (SqlConnection con = new SqlConnection(this.GetConnectionString("AzureDb")))
+            using (SqlConnection con = new SqlConnection(this.GetConnectionString(this._dbName)))
             {
                 using (SqlCommand cmd = new SqlCommand(queryString, con))
                 {
