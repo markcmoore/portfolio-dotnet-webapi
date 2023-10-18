@@ -9,7 +9,7 @@ namespace portfolio_website_testing.DatabaseReset
 {
     public class DatabaseSetup : IDatabaseSetup
     {
-        private string _TestingDbConStr = null;
+        private string _TestingDbConStr = string.Empty;
         public DatabaseSetup(string conStr)
         {
             this._TestingDbConStr = conStr;

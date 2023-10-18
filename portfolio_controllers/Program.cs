@@ -25,6 +25,7 @@ public class Program
         builder.Services.AddSwaggerGen();
         builder.Services.AddScoped<IRegister, Register>();
         builder.Services.AddScoped<IRegister_Repo_Access, Register_Repo_Access>();
+        // TODO: refactor the DbAccess layer to abstract away the ado.net portion for separation of concerns.
         builder.Services.AddCors((options) =>
         {
             options.AddPolicy(name: "allowAll", policy1 =>

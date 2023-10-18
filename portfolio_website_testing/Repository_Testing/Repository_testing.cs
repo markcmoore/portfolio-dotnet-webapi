@@ -18,8 +18,8 @@ namespace portfolio_website_testing
             this._configuration = new ConfigurationBuilder()
                 .AddUserSecrets<Repository_testing>()
                 .AddEnvironmentVariables()
-                .Build(); ;
-            this._TestingDbConStr = this._configuration.GetConnectionString("TestingDb");// haven't been able to get htis to work with github actions
+                .Build();
+            this._TestingDbConStr = this._configuration.GetConnectionString("TestingDb");// TODO:haven't been able to get this to work with github actions
             Console.WriteLine(this._TestingDbConStr);
         }
 
