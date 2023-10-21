@@ -21,20 +21,23 @@ namespace portfolio_website_testing
                 .Build();
             // this._TestingDbConStr = this._configuration.GetConnectionString("TestingDb");// TODO:haven't been able to get this to work with github actions
             this._TestingDbConStr = "Server=tcp:portfolio-website-server.database.windows.net,1433;Initial Catalog=portfolio-website-testing-db;Persist Security Info=False;User ID=portfolio-db;Password=marks1websiteDb;MultipleActiveResultSets=False;Encrypt=True;TrustServerCertificate=False;Connection Timeout=30;";
-            Console.WriteLine(this._TestingDbConStr);
         }
 
         [Fact]
-        public async void CreateTablesAsync_SetsUpTableProofOfConcept()
+        public async Task SetUpAllTestTables()
         {
-            // ARRANGE
             DatabaseSetup dbSetup = new DatabaseSetup(this._TestingDbConStr!);
-
-            // ACT
+            await dbSetup.DeleteExistingTablesIfexistAsync();
             await dbSetup.CreateTablesAsync();
+            await dbSetup.PopulateSalutations();
+            await dbSetup.PopulateOccupations();
+            await dbSetup.PopulateTodos();
+            await dbSetup.PopulateAccounts();
+            await dbSetup.PopulateTodosJunction();
 
-            //ASSERT
+
             Assert.True(true);
         }
+
     }
 }
