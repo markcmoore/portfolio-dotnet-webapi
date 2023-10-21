@@ -82,7 +82,8 @@ namespace portfolio_business_logic
                 dict.Add(retStr, new RegisteredAccount());
                 return dict;
             }
-            //no successfull outcome makes it this far, little guy. Try again.
+            //no successful outcome makes it this far, little guy. Try again.
+            // this line serves to catch a db error in both the register or retreival of the new account
             dict.Add("ERROR: There was a database error. Try again.", new RegisteredAccount());
             return dict;
         }

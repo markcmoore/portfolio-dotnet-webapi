@@ -13,7 +13,7 @@ namespace portfolio_website_testing
     {
         public async Task<RegisteredAccount> GetAccountByUsernameAndPassword(string userName, string password)
         {
-            throw new NotImplementedException();
+            return new RegisteredAccount() { Username = userName, Password = password };
         }
 
         public string HashPassword(RegisterModel x, string password)
@@ -23,16 +23,16 @@ namespace portfolio_website_testing
             return ret;
         }
 
-        public async Task<RegisteredAccount> RegisterNewAccountAsync(RegisterModel rm, string hashedPassword)
+        public async Task<int> RegisterNewAccountAsync(RegisterModel rm, string hashedPassword)
         {
             RegisteredAccount ra = new RegisteredAccount() { Username = rm.Username, Password = rm.Password };
 
-            // numbers 0,1,2,3, and 4 will return rm unchanged. failure will change the firstname prop to "failure"
+            // numbers 0,1,2,and 3 will return rm unchanged. 4 means a db error so it's a failure, so we will change the firstname property to "failure_case"
             if (ra.Username.Equals("failure_case"))
             {
-                ra.FirstName = "failure_case";
+                return 0;
             }
-            return ra;
+            return 1;
         }
 
         public async Task<List<TodoDetails>> Todos(int accountId)
