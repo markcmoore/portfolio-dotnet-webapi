@@ -34,8 +34,6 @@ namespace portfolio_website_testing
             await dbSetup.PopulateTodos();
             await dbSetup.PopulateAccounts();
             await dbSetup.PopulateTodosJunction();
-
-
             Assert.True(true);
         }
 

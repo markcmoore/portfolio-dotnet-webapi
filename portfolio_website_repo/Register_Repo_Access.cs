@@ -38,7 +38,6 @@ namespace portfolio_website_repo
 
             using (SqlConnection con = new SqlConnection(this.GetConnectionString(this._dbName)))
             {
-
                 using (SqlCommand cmd = new SqlCommand(queryString1, con))
                 {
 
