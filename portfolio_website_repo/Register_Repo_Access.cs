@@ -158,7 +158,7 @@ namespace portfolio_website_repo
         }
 
         /// <summary>
-        /// Retrieves the correct connection string from the global context depending on Dev or Prod environment.
+        /// Retrieves the correct connection string from the global context (appsettings.json or webAPI connection strings) depending on Dev or Prod environment.
         /// </summary>
         /// <param name="connectionName"></param>
         /// <returns></returns>
