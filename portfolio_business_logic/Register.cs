@@ -44,12 +44,24 @@ namespace portfolio_business_logic
                 // get the password hash.
                 string hashedPassword = this._repo.HashPassword(rm, rm.Password);
                 // INSERT the new account into the Db.
-                RegisteredAccount ret = await this._repo.RegisterNewAccountAsync(rm, hashedPassword);
-                if (!(ret.FirstName == "failure_case"))
+                // TODO delete the below if all works.
+                // RegisteredAccount ret = await this._repo.RegisterNewAccountAsync(rm, hashedPassword);
+                // if (!(ret.FirstName == "failure_case"))
+                // {
+                //     string retStr = "success";
+                //     dict.Add(retStr, ret);
+                //     return dict;
+                // }
+                int success = await this._repo.RegisterNewAccountAsync(rm, hashedPassword);
+                if (success == 1)
                 {
-                    string retStr = "success";
-                    dict.Add(retStr, ret);
-                    return dict;
+                    RegisteredAccount ret = await this._repo.GetAccountByUsernameAndPassword(rm.Username, rm.Password);
+                    if (ret != null)
+                    {
+                        string retStr = "success";
+                        dict.Add(retStr, ret);
+                        return dict;
+                    }
                 }
             }
             else if (exists == 1)

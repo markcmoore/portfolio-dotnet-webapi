@@ -13,6 +13,7 @@ namespace portfolio_website_repo
         private readonly IConfiguration? _configuration;
         private readonly ILogger<Register_Repo_Access>? _logger;
         private readonly string _dbName;
+        public Register_Repo_Access() { }
         public Register_Repo_Access(IConfiguration _config, ILogger<Register_Repo_Access> logger, string dbName = "AzureDb")
         {
             this._configuration = _config;
@@ -20,7 +21,6 @@ namespace portfolio_website_repo
             this._dbName = dbName;// when testing the testproject will send "TestingDb" so that the repo layer uses the testing db.
         }
 
-        public Register_Repo_Access() { }
 
         /// <summary>
         /// Takes a RegisterModel object and a hash representation of the models password. 
@@ -32,7 +32,7 @@ namespace portfolio_website_repo
         /// <param name="rm">< /param>
         /// <param name="hashedPassword"></param>
         /// <returns></returns>
-        public async Task<RegisteredAccount> RegisterNewAccountAsync(RegisterModel rm, string hashedPassword)
+        public async Task<int> RegisterNewAccountAsync(RegisterModel rm, string hashedPassword)
         {
             string queryString1 = $"INSERT INTO ACCOUNTS (username, password, hashedpassword, salutationid_FK, firstname, lastname, occupationid_FK, email, phonenumber, birthdate) VALUES(@username,@password,@hashedpassword,@salutationid,@firstname,@lastname,@occupationid,@email,@phonenumber,@birthdate)";
 
@@ -40,7 +40,6 @@ namespace portfolio_website_repo
             {
                 using (SqlCommand cmd = new SqlCommand(queryString1, con))
                 {
-
                     cmd.CommandText = queryString1;
                     cmd.Parameters.AddWithValue("username", rm.Username);
                     cmd.Parameters.AddWithValue("password", rm.Password);
@@ -60,15 +59,17 @@ namespace portfolio_website_repo
                     {
                         Console.WriteLine($"There was an error in Register_Repo_Access.RegisterNewAccountAsync - {ex.ErrorCode} - {ex.InnerException} - {ex.Message}");
                     }
-                    if (reader1 == 1)
-                    {
-                        RegisteredAccount ra = await this.GetAccountByUsernameAndPassword(rm.Username, rm.Password);
-                        if (ra != null)
-                        {
-                            return ra;
-                        }
-                    }
-                    return new RegisteredAccount() { FirstName = "failure" };
+                    // TODO: remove the below if all works.
+                    // if (reader1 == 1)
+                    // {
+                    //     RegisteredAccount ra = await this.GetAccountByUsernameAndPassword(rm.Username, rm.Password);
+                    //     if (ra != null)
+                    //     {
+                    //         return ra;
+                    //     }
+                    // }
+                    // return new RegisteredAccount() { FirstName = "failure" };
+                    return reader1;
                 }
             }
         }
@@ -118,7 +119,6 @@ namespace portfolio_website_repo
                     {
                         con.Open();
                         DbDataReader reader = await cmd.ExecuteReaderAsync();
-
                         if (await reader.ReadAsync())
                         {
                             RegisteredAccount newAcc = new RegisteredAccount()

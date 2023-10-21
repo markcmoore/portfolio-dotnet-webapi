@@ -37,5 +37,12 @@ namespace portfolio_website_testing
             Assert.True(true);
         }
 
+        [Fact]
+        public async Task RegisterNewAccountAsync_ReturnsRegisteredAccount()
+        {
+
+
+        }
+
     }
 }
