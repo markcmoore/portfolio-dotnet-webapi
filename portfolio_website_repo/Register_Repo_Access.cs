@@ -13,14 +13,13 @@ namespace portfolio_website_repo
         private readonly IConfiguration? _configuration;
         private readonly ILogger<Register_Repo_Access>? _logger;
         private readonly string _dbName;
-        public Register_Repo_Access() { }
         public Register_Repo_Access(IConfiguration _config, ILogger<Register_Repo_Access> logger, string dbName = "AzureDb")
         {
             this._configuration = _config;
             this._logger = logger;
             this._dbName = dbName;// when testing the testproject will send "TestingDb" so that the repo layer uses the testing db.
+            Console.WriteLine(dbName);
         }
-
 
         /// <summary>
         /// Takes a RegisterModel object and a hash representation of the models password. 
@@ -59,16 +58,6 @@ namespace portfolio_website_repo
                     {
                         Console.WriteLine($"There was an error in Register_Repo_Access.RegisterNewAccountAsync - {ex.ErrorCode} - {ex.InnerException} - {ex.Message}");
                     }
-                    // TODO: remove the below if all works.
-                    // if (reader1 == 1)
-                    // {
-                    //     RegisteredAccount ra = await this.GetAccountByUsernameAndPassword(rm.Username, rm.Password);
-                    //     if (ra != null)
-                    //     {
-                    //         return ra;
-                    //     }
-                    // }
-                    // return new RegisteredAccount() { FirstName = "failure" };
                     return reader1;
                 }
             }
@@ -163,7 +152,12 @@ namespace portfolio_website_repo
         /// <returns></returns>
         private string GetConnectionString(string connectionName)
         {
-            return this._configuration?.GetConnectionString(this._dbName)!;
+            if (connectionName == "AzureDb")
+            {
+                return this._configuration?.GetConnectionString(this._dbName)!;
+            }
+            // TODO: refactor to use the testing Db when testing locally and in the pipeline.
+            else return "Server=tcp:portfolio-website-server.database.windows.net,1433;Initial Catalog=portfolio-website-testing-db;Persist Security Info=False;User ID=portfolio-db;Password=marks1websiteDb;MultipleActiveResultSets=False;Encrypt=True;TrustServerCertificate=False;Connection Timeout=30;";
         }
 
         /// <summary>
