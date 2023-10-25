@@ -152,12 +152,14 @@ namespace portfolio_website_repo
         /// <returns></returns>
         private string GetConnectionString(string connectionName)
         {
-            if (connectionName == "AzureDb")
-            {
-                return this._configuration?.GetConnectionString(this._dbName)!;
-            }
-            // TODO: refactor to use the testing Db when testing locally and in the pipeline.
-            else return "Server=tcp:portfolio-website-server.database.windows.net,1433;Initial Catalog=portfolio-website-testing-db;Persist Security Info=False;User ID=portfolio-db;Password=marks1websiteDb;MultipleActiveResultSets=False;Encrypt=True;TrustServerCertificate=False;Connection Timeout=30;";
+            return this._configuration?.GetConnectionString(this._dbName)!;
+
+            // if (connectionName == "AzureDb")
+            // {
+            //     return this._configuration?.GetConnectionString(this._dbName)!;
+            // }
+            // // TODO: refactor to use the testing Db when testing locally and in the pipeline.
+            // else return "Server=tcp:portfolio-website-server.database.windows.net,1433;Initial Catalog=portfolio-website-testing-db;Persist Security Info=False;User ID=portfolio-db;Password=marks1websiteDb;MultipleActiveResultSets=False;Encrypt=True;TrustServerCertificate=False;Connection Timeout=30;";
         }
 
         /// <summary>
