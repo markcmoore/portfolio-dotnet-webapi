@@ -24,7 +24,13 @@ namespace portfolio_website_testing
         public Repository_testing()
         {
             this._configuration = new ConfigurationBuilder()
-                .AddUserSecrets("d0e053c6-5dc4-4f19-88fd-b3768b30ce0e")
+                //.AddUserSecrets("secrets.json")
+
+                // this is the only one of the options that works.
+                .AddJsonFile("appsettings.json")
+                // TODO: IDEA: 1)keep the con Str in github secrets. 2) during pipeline CI/CD, create an 'appsettings.json' file at root append the con str in the {}"connectionStrings":{"TestingDb":"stringggggg"}" object (along with all settings needed for deployment).
+                // .AddUserSecrets<Register_Repo_Access>(). 4) NOW the test suite can access it during CI/CD. 
+                // OPTION: you may be able to make the file a different name to avoid any confusion.
                 .AddEnvironmentVariables()
                 .Build();
 

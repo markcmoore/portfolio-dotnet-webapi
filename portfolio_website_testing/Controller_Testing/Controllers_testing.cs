@@ -1,5 +1,6 @@
 using System;
 using System.Collections.Generic;
+using System.IO.Compression;
 using System.Linq;
 using System.Threading.Tasks;
 using Microsoft.AspNetCore.Http.HttpResults;
@@ -7,6 +8,7 @@ using Microsoft.AspNetCore.Mvc;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.Logging;
 using Microsoft.Extensions.Logging.Abstractions;
+using Microsoft.VisualStudio.TestPlatform.CommunicationUtilities;
 using portfolio_business_logic;
 using portfolio_website.Controllers;
 using portfolio_website_models;
@@ -21,23 +23,20 @@ namespace portfolio_website_testing
     public class Controllers_testing
     {
 
-        #region arrays to send to the different action methods.
+        #region Object arrays are sent to the different action methods.
         public static readonly IEnumerable<object[]> _RegisterNewAccountTestArray = new List<object[]>(){
             new object[] {new RegisterModel(){Username = "success"} },
             new object[] {new RegisterModel(){Username = "username"} },
             new object[] {new RegisterModel(){Username = "password"} },
             new object[] {new RegisterModel(){Username = "both"} }
         };
-
         #endregion
-        // private readonly IConfiguration _configuration;
-        // private readonly IRegister_Repo_Access _repo;
+
         private readonly ILogger<RegisterController> _logger;
         private readonly IRegister _register;
         private readonly RegisterController _registerController;
         public Controllers_testing()
         {
-            // this._configuration = _config;
             this._register = new MockRegister();
             ILoggerFactory loggerFactory = LoggerFactory.Create(log => log.AddConsole());
             this._logger = loggerFactory.CreateLogger<RegisterController>();
@@ -55,6 +54,9 @@ namespace portfolio_website_testing
 
             // ASSERT
             Assert.True(myDouble == (myInt * 2));
+            Assert.Equal(1.62, 1.59, 1);//  1 rounds the numbers to the nearest 10th.
+            Assert.Equal(1.629, 1.632, 2);//  1 rounds the numbers to the nearest 10th.
+
         }
 
         [Theory]
@@ -69,7 +71,7 @@ namespace portfolio_website_testing
             // ASSERT
             if (retDictionary.Result is CreatedResult)
             {
-                Assert.True(rm.Username == "success");
+                Assert.True(rm.Username == "success");// TESTING: add a message for when the test fails.
             }
             else if (retDictionary.Result is BadRequestObjectResult)
             {
@@ -129,5 +131,68 @@ namespace portfolio_website_testing
             }
         }
 
-    }
-}
+        [Fact]
+        public void FactTestExamples()
+        {
+            //ints, doubles, etc.
+            double dbl1 = 16.735, dbl2 = 16.68, dbl3 = 16.739;
+            Assert.Equal(dbl1, dbl3, 0); // use 0 as the 3rd arg (precision) to compare to the nearest 10th. 
+            Assert.Equal(dbl1, dbl2, 1); // use 1 as the 3rd arg to round to the nearest 10th.
+            Assert.Equal(dbl1, dbl3, 1); // use 2 as the 3rd arg to round to the nearest 100th.
+
+            //strings
+            string tim1 = "tim", tim2 = "Tim";
+            Assert.Equal(tim1, tim2, ignoreCase: true); // set ignore case to true to make the test case insensitive.
+            Assert.Contains("ti", tim2, StringComparison.InvariantCultureIgnoreCase);// use the way to make the test case insensitive.
+            Assert.StartsWith("ti", tim2, StringComparison.InvariantCultureIgnoreCase);
+            Assert.Matches("[A-Z]{1}[a-z]+ [A-Z]{1}[a-z]+", tim2 + " " + tim2);// use a regex to compare with. section explanation = [A-Z]{1} = the first letter must be capital in A-Z range, [a-z]+ = any amount of lower case letters. not the space. there must be a space between the words., [A-Z]{1}[a-z]+ = another word starting with a capital.
+            string nullStr = null;
+            Assert.Null(nullStr);
+            string emptyStr = string.Empty;
+            Assert.NotNull(emptyStr);
+            Assert.True(string.IsNullOrEmpty(emptyStr));
+
+            // Collections
+            List<int> intList = new List<int>() { 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14 };
+            List<int> intList2 = new List<int>() { 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14 };
+            Assert.All(intList, x => Assert.True(x > 0)); // .All() takes the collection and a predicate for how to assert on each value in the collection.
+            Assert.Contains(11, intList); // iterate over the collection
+            Assert.DoesNotContain(0, intList); // iterate over the collection
+            Assert.Equal(intList2, intList);// see that 2 collections contain the same values, in the same order.
+
+            // Ranges of values
+            int age1 = 25, age2 = 30;
+            Assert.InRange(age1, 18, age2);
+
+            // checking that exceptions were thrown.
+            Assert.Throws<ArgumentNullException>(() => Controllers_testing.ThrowsException());// make sure that the method throws an exception when you do a certain thing.
+            var exceptionThrown = Assert.Throws<ArgumentNullException>(() => Controllers_testing.ThrowsException());// catch the exception that was thrown
+            Assert.Equal("this is the test exception", exceptionThrown.ParamName);// check that the message sent with the exception is as expected.
+
+            // check the type of an Object
+            string str1 = "mark";
+            Assert.IsType(typeof(string), str1);
+            RegisteredAccount mockAccount = new RegisteredAccount()
+            {
+                AccountId = 212,
+                CreatedOn = DateTime.Now,
+                FirstName = "",
+                LastName = "",
+                Occupation = "test",
+            };
+            Assert.IsType(typeof(RegisteredAccount), mockAccount);
+            RegisteredAccount ra = Assert.IsType<RegisteredAccount>(mockAccount);
+            Assert.Equal(212, ra.AccountId);
+
+
+
+
+
+        }
+
+        private static void ThrowsException()
+        {
+            throw new ArgumentNullException("this is the test exception");
+        }
+    }// EoC
+}// EoN

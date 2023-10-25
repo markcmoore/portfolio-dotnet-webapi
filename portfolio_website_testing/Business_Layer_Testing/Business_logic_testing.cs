@@ -26,13 +26,6 @@ namespace portfolio_website_testing
             this._registerClass = new Register(this._mockregrepo, this._logger);
         }
 
-
-        // [Fact]
-        // public void AccountInfo_ReturnsCorrectAccount()
-        // {
-        //     Assert.True(false);
-        // }
-
         [Theory]
         [InlineData("zerozerozero", "zerozerozero")]
         [InlineData("oneoneoneone", "oneoneoneone")]
