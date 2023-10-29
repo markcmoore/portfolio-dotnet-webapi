@@ -10,12 +10,21 @@ namespace portfolio_website_testing.DatabaseReset
     public class DatabaseSetup : IDatabaseSetup
     {
         private string _TestingDbConStr = string.Empty;
-        public DatabaseSetup(string conStr)
+        public DatabaseSetup() { }
+
+        public async Task SetUpTestingDb(string testingDbConString)
         {
-            this._TestingDbConStr = conStr;
+            this._TestingDbConStr = testingDbConString;
+            await this.DeleteExistingTablesIfexistAsync();
+            await this.CreateTablesAsync();
+            await this.PopulateSalutations();
+            await this.PopulateOccupations();
+            await this.PopulateTodos();
+            await this.PopulateAccounts();
+            await this.PopulateTodosJunction();
         }
 
-        public async Task DeleteExistingTablesIfexistAsync()
+        private async Task DeleteExistingTablesIfexistAsync()
         {
             string queryString = "DROP TABLE IF EXISTS TodosJunction;DROP TABLE IF EXISTS Accounts;DROP TABLE IF EXISTS Todos;DROP TABLE IF EXISTS OCCUPATIONS;DROP TABLE IF EXISTS Salutations;";
 
@@ -36,7 +45,7 @@ namespace portfolio_website_testing.DatabaseReset
             }
         }
 
-        public async Task CreateTablesAsync()
+        private async Task CreateTablesAsync()
         {
             string queryString =
             "CREATE TABLE Salutations (SalutationId INT PRIMARY KEY IDENTITY(1,1),Salutation VARCHAR(20) NOT NULL,CreatedOn DATETIME DEFAULT GETDATE(),);" +
@@ -66,7 +75,7 @@ namespace portfolio_website_testing.DatabaseReset
             }
         }
 
-        public async Task PopulateSalutations()
+        private async Task PopulateSalutations()
         {
             string queryString =
             "INSERT INTO Salutations (Salutation) VALUES ('Sir');" +
@@ -101,7 +110,7 @@ namespace portfolio_website_testing.DatabaseReset
             }            //
         }
 
-        public async Task PopulateOccupations()
+        private async Task PopulateOccupations()
         {
             string queryString =
             "INSERT INTO OCCUPATIONS (Occupation) VALUES ('Recruiter');" +
@@ -129,7 +138,7 @@ namespace portfolio_website_testing.DatabaseReset
             }
         }
 
-        public async Task PopulateTodos()
+        private async Task PopulateTodos()
         {
             string queryString =
             "INSERT INTO Todos (Todo) VALUES ('make a list');" +
@@ -154,7 +163,7 @@ namespace portfolio_website_testing.DatabaseReset
             }
         }
 
-        public async Task PopulateAccounts()
+        private async Task PopulateAccounts()
         {
             string queryString =
             "INSERT INTO ACCOUNTS (USERNAME, PASSWORD, HASHEDPASSWORD, SALUTATIONID_FK, FIRSTNAME, LASTNAME, OCCUPATIONID_FK, EMAIL, EMAILCONFIRMED, PHONENUMBER, PHONECONFIRMED, BIRTHDATE, HASSENTEMAIL, HASMADEOFFER) VALUES ('a1', 'a1','a1hashed', 1, 'Mark','Moore',1,'mcm@h.com',1,'1234567890',1,'2011-11-07T19:01:55.714942+03:00',1,1);" +
@@ -177,7 +186,7 @@ namespace portfolio_website_testing.DatabaseReset
             }
         }
 
-        public async Task PopulateTodosJunction()
+        private async Task PopulateTodosJunction()
         {
             string queryString =
             "INSERT INTO TODOSJUNCTION (AccountId_FK, TodoId_FK) VALUES (1,1);" +

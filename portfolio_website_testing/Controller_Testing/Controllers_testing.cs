@@ -20,12 +20,12 @@ namespace portfolio_website_testing
     /// <summary>
     /// This class tests the Register controller and implements a mock Register Class instance and mock logger for DI.
     /// </summary>
+    [Trait("Category", "Controllers")]// this category will also run tests within the class that have a different category. use --> dotnet test --filter "Category = Controllers"
     public class Controllers_testing
     {
-
         #region Object arrays are sent to the different action methods.
         public static readonly IEnumerable<object[]> _RegisterNewAccountTestArray = new List<object[]>(){
-            new object[] {new RegisterModel(){Username = "success"} },
+            new object[] {new RegisterModel(){Username = "success"} },// each array element is an arg for the method. That is why it's an object array. 
             new object[] {new RegisterModel(){Username = "username"} },
             new object[] {new RegisterModel(){Username = "password"} },
             new object[] {new RegisterModel(){Username = "both"} }
@@ -131,6 +131,7 @@ namespace portfolio_website_testing
             }
         }
 
+        #region - trying out test synax from the tutorial https://www.udemy.com/course/unit-testing-net-core-2x-applications-with-xunit-net/
         [Fact]
         public void FactTestExamples()
         {
@@ -184,15 +185,33 @@ namespace portfolio_website_testing
             RegisteredAccount ra = Assert.IsType<RegisteredAccount>(mockAccount);
             Assert.Equal(212, ra.AccountId);
 
+        }
 
+        // use the [Trait] attribute to group tests so that they are run together.
+        [Fact]
+        [Trait("Category", "Mark1")] // by giving the tests a category name, run only tests with that category name.
+        public void DoAThin1g()
+        {
+            Assert.Equal(1, 1);
+        }
 
-
-
+        [Theory]
+        [InlineData(1, true)]
+        [InlineData(2, true)]
+        [InlineData(3, true)]
+        [Trait("Category", "Mark1")] // dotnet test --filter "Category=Mark1"
+        public void DoAThing2(int a, bool b)
+        {
+            if (a != 2 && a != 3) Assert.Equal(a, 1);
+            else Assert.True(2 == a || 3 == a);
         }
 
         private static void ThrowsException()
         {
             throw new ArgumentNullException("this is the test exception");
         }
+
+
+        #endregion
     }// EoC
 }// EoN
